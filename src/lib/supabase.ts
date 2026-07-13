@@ -56,16 +56,17 @@ class MockSupabaseClient {
   };
 
   from(table: string) {
-    return {
-      select: () => this,
-      insert: () => this,
-      update: () => this,
-      delete: () => this,
-      eq: () => this,
-      order: () => this,
+    const queryBuilder = {
+      select: () => queryBuilder,
+      insert: () => queryBuilder,
+      update: () => queryBuilder,
+      delete: () => queryBuilder,
+      eq: () => queryBuilder,
+      order: () => queryBuilder,
       single: async () => ({ data: null, error: null }),
       then: (resolve: (val: { data: Record<string, unknown>[]; error: null }) => void) => resolve({ data: [], error: null })
     };
+    return queryBuilder;
   }
 
   channel() {

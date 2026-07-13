@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useAppStore, type UserRole } from '@/store/useAppStore';
 import { 
   Users, 
@@ -450,9 +451,12 @@ const PortalCard = ({ role, path, imgSrc, title, desc, accent, badgeText, naviga
 
       {/* Local Background Image with absolute top crop offset to exclude baked-in headers */}
       <div className="absolute inset-0 opacity-20 group-hover:opacity-40 group-hover:scale-[1.05] transition-all duration-700 pointer-events-none select-none z-[0] overflow-hidden">
-        <img 
+        <Image 
           src={imgSrc} 
           alt={title}
+          width={400}
+          height={500}
+          unoptimized
           className="absolute -top-[15%] left-0 w-full h-[135%] object-cover object-center"
         />
       </div>
@@ -727,9 +731,12 @@ export default function Home() {
 
               {/* Graphic Overlay on the right */}
               <div className="absolute right-0 bottom-0 w-1/2 h-full opacity-35 group-hover:opacity-45 transition-all duration-700 pointer-events-none overflow-hidden select-none">
-                <img 
+                <Image 
                   src="/landing_image.png" 
                   alt="Crowd Heatmap"
+                  width={400}
+                  height={300}
+                  unoptimized
                   className="object-cover w-full h-full object-left group-hover:scale-105 transition duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-neutral-950 to-transparent"></div>

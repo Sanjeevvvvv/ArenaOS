@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useAppStore, type TransitItem } from '@/store/useAppStore';
 import { StadiumMap } from '@/components/map/StadiumMap';
 import { soundManager } from '@/lib/sounds';
+import { findOptimalTransitRoute } from '@/lib/transit';
 import { 
   HeartHandshake, 
   MapPin, 
@@ -79,7 +80,7 @@ export default function FanPortal() {
     }
   };
 
-  const recommendedTransit = transit.find(t => t.status === 'on-time') || transit[0];
+  const recommendedTransit = findOptimalTransitRoute(transit) || transit[0];
 
   return (
     <div className="flex-1 p-4 sm:p-6 bg-neutral-950 text-white min-h-[calc(100vh-4rem)] space-y-6">
