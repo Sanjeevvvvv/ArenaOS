@@ -1,0 +1,553 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>StadiumOS | FIFA World Cup 2026</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+<style>
+        @import url('https://fonts.cdnfonts.com/css/geist');
+        
+        body {
+            background-color: #050816;
+            color: #e6e0e9;
+            overflow-x: hidden;
+            font-family: 'Geist', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(29, 27, 32, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border: 1px solid rgba(207, 188, 255, 0.3);
+            box-shadow: 0 0 30px rgba(207, 188, 255, 0.1);
+        }
+
+        .glow-pulse {
+            position: relative;
+        }
+
+        .glow-pulse::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            border: 1px solid #cfbcff;
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .magnetic-btn {
+            transition: transform 0.2s ease-out;
+        }
+
+        .ai-breathing {
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#1d1b20",
+                        "on-primary-container": "#e0d2ff",
+                        "on-secondary-container": "#bfb2da",
+                        "tertiary": "#e7c365",
+                        "on-secondary-fixed-variant": "#4b4263",
+                        "secondary": "#cdc0e9",
+                        "on-secondary": "#342b4b",
+                        "on-secondary-fixed": "#1f1635",
+                        "on-primary-fixed": "#22005d",
+                        "on-tertiary": "#3e2e00",
+                        "secondary-fixed": "#e9ddff",
+                        "primary-fixed": "#e9ddff",
+                        "surface-tint": "#cfbcff",
+                        "secondary-container": "#4d4465",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#36343a",
+                        "on-primary": "#381e72",
+                        "surface-variant": "#36343a",
+                        "outline-variant": "#494551",
+                        "error-container": "#93000a",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed": "#241a00",
+                        "surface-bright": "#3b383e",
+                        "surface": "#141218",
+                        "primary-container": "#6750a4",
+                        "surface-container": "#211f24",
+                        "on-background": "#e6e0e9",
+                        "surface-dim": "#141218",
+                        "tertiary-fixed": "#ffdf93",
+                        "surface-container-high": "#2b292f",
+                        "secondary-fixed-dim": "#cdc0e9",
+                        "on-tertiary-container": "#503d00",
+                        "outline": "#948e9c",
+                        "surface-container-lowest": "#0f0d13",
+                        "tertiary-container": "#c9a74d",
+                        "on-tertiary-fixed-variant": "#594400",
+                        "on-surface-variant": "#cbc4d2",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#4f378a",
+                        "primary-fixed-dim": "#cfbcff",
+                        "inverse-on-surface": "#322f35",
+                        "inverse-primary": "#6750a4",
+                        "inverse-surface": "#e6e0e9",
+                        "on-surface": "#e6e0e9",
+                        "primary": "#cfbcff",
+                        "tertiary-fixed-dim": "#e7c365",
+                        "background": "#141218"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar-width": "280px",
+                        "unit": "4px",
+                        "gutter": "24px",
+                        "margin-safe": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Geist"],
+                        "body-md": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "display-xl": ["Geist"],
+                        "label-mono": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-xl": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background selection:bg-primary selection:text-on-primary">
+<!-- Global Background Shader -->
+<div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+
+</div>
+<!-- Navigation Shell -->
+<nav class="sticky top-0 z-50 bg-surface/40 backdrop-blur-[40px] flex justify-between items-center w-full px-margin-safe py-4 border-b border-white/5 shadow-xl">
+<div class="flex items-center gap-8">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-black text-on-surface tracking-tighter">ArenaOS</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="#">Match Center</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all" href="#">Staffing</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all" href="#">Grid View</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center bg-white/5 rounded-full px-4 py-2 border border-white/10">
+<span class="material-symbols-outlined text-primary text-[20px] mr-2">search</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Global Search...</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-all active:scale-90">
+<span class="material-symbols-outlined">notifications_active</span>
+</button>
+<div class="h-8 w-px bg-white/10"></div>
+<div class="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
+<span class="material-symbols-outlined text-primary text-[18px]">smart_toy</span>
+<span class="font-label-mono text-label-mono text-primary uppercase">Admin</span>
+</div>
+</div>
+</div>
+</nav>
+<main class="relative z-10 px-margin-safe">
+<!-- Hero Section -->
+<section class="min-h-[819px] flex flex-col items-center justify-center text-center pt-24 pb-12 transition-all duration-1000 opacity-100 translate-y-0">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full bg-white/5 border border-white/10 backdrop-blur-md ai-breathing">
+<span class="flex h-2 w-2 rounded-full bg-primary glow-pulse"></span>
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">System Live: FIFA World Cup 2026 Ready</span>
+</div>
+<h1 class="font-display-xl text-display-xl text-on-background mb-6 max-w-5xl leading-tight">
+                The AI <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Operating System</span> powering FIFA World Cup 2026
+            </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mb-12 opacity-80">
+                A cognitive infrastructure layer connecting 16 host cities, 48 teams, and 1.5M fans. Real-time orchestration of security, logistics, and spatial intelligence.
+            </p>
+<div class="flex flex-col sm:flex-row gap-6">
+<button class="magnetic-btn group relative px-8 py-4 bg-primary text-on-primary font-headline-lg-mobile text-headline-lg-mobile rounded-full overflow-hidden transition-all hover:shadow-[0_0_30px_rgba(207,188,255,0.4)]">
+<div class="absolute inset-0 shimmer opacity-20"></div>
+<span class="relative z-10 flex items-center gap-2">
+                        Get Started <span class="material-symbols-outlined">arrow_forward</span>
+</span>
+</button>
+<button class="px-8 py-4 bg-white/5 backdrop-blur-lg border border-white/10 text-on-surface font-headline-lg-mobile text-headline-lg-mobile rounded-full hover:bg-white/10 transition-all">
+                    View Network Map
+                </button>
+</div>
+</section>
+<!-- 3D Visualization Section -->
+<section class="py-24 relative transition-all duration-1000 opacity-0 translate-y-10">
+<div class="glass-card rounded-[40px] p-1 overflow-hidden relative group">
+<div class="aspect-video w-full rounded-[38px] bg-[#0A0D1D] flex items-center justify-center relative overflow-hidden">
+<!-- Placeholder for 3D Stadium -->
+
+<!-- Overlay Controls -->
+<div class="absolute top-8 left-8 flex flex-col gap-4">
+<div class="glass-card rounded-xl p-4 border-l-4 border-l-primary">
+<span class="font-label-mono text-label-mono text-primary block mb-1">STADIUM_ID</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">METLIFE_ARENA_NJ</span>
+</div>
+<div class="glass-card rounded-xl p-4">
+<span class="font-label-mono text-label-mono text-on-surface-variant block mb-1">CROWD_DENSITY</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">82.4%</span>
+</div>
+</div>
+<div class="absolute bottom-8 right-8">
+<button class="bg-primary/20 backdrop-blur-xl border border-primary/30 p-4 rounded-full text-primary hover:bg-primary/40 transition-all">
+<span class="material-symbols-outlined text-[32px]">view_in_ar</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Live Statistics -->
+<section class="py-24 grid grid-cols-1 md:grid-cols-3 gap-gutter transition-all duration-1000 opacity-0 translate-y-10">
+<div class="glass-card p-10 rounded-[32px] text-center flex flex-col items-center">
+<div class="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-[32px]">groups</span>
+</div>
+<h3 class="font-display-xl text-[48px] text-on-surface leading-none mb-2">1.5M</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">Active Fan Sessions</p>
+</div>
+<div class="glass-card p-10 rounded-[32px] text-center flex flex-col items-center">
+<div class="h-16 w-16 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mb-6">
+<span class="material-symbols-outlined text-[32px]">flag</span>
+</div>
+<h3 class="font-display-xl text-[48px] text-on-surface leading-none mb-2">48</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">National Teams Unified</p>
+</div>
+<div class="glass-card p-10 rounded-[32px] text-center flex flex-col items-center">
+<div class="h-16 w-16 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary mb-6">
+<span class="material-symbols-outlined text-[32px]">location_on</span>
+</div>
+<h3 class="font-display-xl text-[48px] text-on-surface leading-none mb-2">16</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">Host City Nodes</p>
+</div>
+</section>
+<!-- Feature Grid (Bento Style) -->
+<section class="py-24 transition-all duration-1000 opacity-0 translate-y-10">
+<div class="mb-16">
+<h2 class="font-headline-lg text-headline-lg text-on-background mb-4">Core Orchestration Layers</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">Deep integration across every physical and digital touchpoint of the tournament.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 grid-rows-2 gap-gutter h-auto md:h-[800px]">
+<div class="md:col-span-8 md:row-span-1 glass-card rounded-[32px] p-8 flex flex-col justify-between overflow-hidden relative group">
+<div class="relative z-10 max-w-md">
+<div class="bg-primary/20 text-primary w-fit px-3 py-1 rounded-full text-xs font-bold mb-4">REAL-TIME</div>
+<h4 class="font-headline-lg text-headline-lg text-on-surface mb-4">Crowd Intelligence AI</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Computer vision models predicting bottlenecks before they happen, optimizing flow in and out of the stadium zones.</p>
+</div>
+<div class="absolute right-0 bottom-0 w-1/2 h-full opacity-40 group-hover:scale-110 transition-transform duration-700">
+<img class="object-cover w-full h-full" data-alt="A futuristic digital heat map showing crowd density inside a football stadium. The visualization uses neon cyan and electric purple gradients to indicate movement patterns. The style is clean, technical, and data-driven with a cinematic dark background typical of high-end enterprise dashboards." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfXP90NqmGIg6FUIx3CdWJMYnAOatT8r9VKXEaZ1_41qnbfSpz1nLhAXcFLqna7vA3iG6k9lk5wnwG0arhxQxsE7WjIoT-GM18QMrwWNd59-9lsS6fwz8YPHU5Q9ivEfA4ioMt9CBOqGzjbXPMh9ewUSLaJ16fR6N-nIc3Pzg-k0d9yFyCndb3COhYP9Fx5-2BCIfBYy0lYPL-I-lllt89LzQCEaKp7IT5gfw7lPb-1QHXCBZbRFBYx1eTJInQi5CSQXtw4tDyAZE">
+</div>
+</div>
+<div class="md:col-span-4 md:row-span-1 glass-card rounded-[32px] p-8 flex flex-col items-start gap-4 hover:bg-white/5">
+<span class="material-symbols-outlined text-[40px] text-tertiary">near_me</span>
+<h4 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Indoor Navigation</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Hyper-precise wayfinding with AR overlays for concessions, seats, and accessibility routes.</p>
+</div>
+<div class="md:col-span-4 md:row-span-1 glass-card rounded-[32px] p-8 flex flex-col items-start gap-4 hover:bg-white/5">
+<span class="material-symbols-outlined text-[40px] text-secondary">commute</span>
+<h4 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Transportation Hub</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Seamless last-mile logistics sync with city transit systems for 100% efficient exit strategies.</p>
+</div>
+<div class="md:col-span-8 md:row-span-1 glass-card rounded-[32px] p-8 flex flex-col justify-between relative overflow-hidden group">
+<div class="relative z-10 max-w-lg">
+<h4 class="font-headline-lg text-headline-lg text-on-surface mb-4">Sustainability Engine</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">AI-managed energy consumption and waste tracking systems to ensure the most sustainable World Cup in history.</p>
+<button class="mt-6 flex items-center gap-2 text-primary font-label-mono text-label-mono uppercase tracking-widest hover:translate-x-2 transition-transform">
+                            View Impact Report <span class="material-symbols-outlined">trending_flat</span>
+</button>
+</div>
+<div class="absolute right-0 top-0 w-1/3 h-full opacity-30">
+<!-- STITCH_SHADER_START:ANIMATION_3 class="w-full h-full" -->
+<div class="w-full h-full" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_3" style="display:block;width:100%;height:100%" width="263" height="386"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_3');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+varying vec2 v_texCoord;
+
+void main() {
+    vec2 uv = v_texCoord;
+    vec3 color1 = vec3(0.02, 0.03, 0.09); // #050816 Deep Background
+    vec3 color2 = vec3(0.1, 0.05, 0.2);  // Subtle Purple
+    vec3 color3 = vec3(0.0, 0.2, 0.3);  // Deep Cyan
+    
+    float noise = sin(uv.x * 10.0 + u_time * 0.5) * cos(uv.y * 10.0 + u_time * 0.3);
+    vec3 finalColor = mix(color1, color2, clamp(noise * 0.5 + 0.5, 0.0, 1.0));
+    finalColor = mix(finalColor, color3, uv.y * 0.2 * sin(u_time * 0.2));
+    
+    // Add subtle grid glow
+    vec2 grid = abs(fract(uv * 50.0 - 0.5) - 0.5) / fwidth(uv * 50.0);
+    float line = min(grid.x, grid.y);
+    finalColor += vec3(0.1, 0.2, 0.5) * (1.0 - smoothstep(0.0, 0.02, line)) * 0.1;
+
+    gl_FragColor = vec4(finalColor, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_3 -->
+</div>
+</div>
+</div>
+</section>
+<!-- Role Selection -->
+<section class="py-24 transition-all duration-1000 opacity-0 translate-y-10">
+<h2 class="font-headline-lg text-headline-lg text-on-background text-center mb-16">Select Your Interface</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Fan Card -->
+<div class="group relative aspect-[4/5] glass-card rounded-[32px] overflow-hidden cursor-pointer">
+<div class="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity">
+<img class="object-cover h-full w-full" data-alt="A portrait of a passionate football fan in a futuristic stadium setting. Glowing stadium lights reflect in their eyes. The aesthetic is cinematic and high-contrast, featuring deep blue shadows and vibrant cyan highlights. The mood is energetic and celebratory." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuR2C22LPkQJgzbPrBwETijzVt8YVlz4tIBQ8viv16kuQqY1jpw_rJUR-a2N3yX2NM3fPRVyUBXzWbZpb70gwvv3PiZDLStBgETuvXrlwdBaATSKQyCsBwIE9t4HYthdpUDgYBK0aWUkrb3wQ73MUYs_nCAXnLNBS2NVWNnDNeYIMZ6Vr1FyMBX1Bi3S8_59v3ZsPCQe90-blKVeA4SxyVsGaH3jzmRC1Acygc7F0OvJYAcsWrs6MDGpXbHHZRyUa2xaUfUbwRobY">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"></div>
+<div class="absolute bottom-8 left-8 right-8">
+<h5 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Fan</h5>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Real-time stats, AR seat mapping, and seamless ordering.</p>
+<div class="mt-4 w-full h-1 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-0 group-hover:w-full transition-all duration-500"></div>
+</div>
+</div>
+</div>
+<!-- Volunteer Card -->
+<div class="group relative aspect-[4/5] glass-card rounded-[32px] overflow-hidden cursor-pointer">
+<div class="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity">
+<img class="object-cover h-full w-full" data-alt="A volunteer coordinator using a tablet with a glowing UI overlay in a modern stadium concourse. Soft focus on the background crowd. The lighting is clean and high-key with purple and white tones. The style is professional and helpful." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoZGlm99GVx7TAH4ygIhd5HozoyyAEkS_zSstLqvfmRN4Jdjg6z97d9gXECMqCekLix3FEvzCAZjW9dTv_G1flF3H8Ab3IZfBH5CNcLYrfPTN5HYVvALmSc4M6ntHU7-K3zZArL1lJ4V6lmOvVrH9FK8wYE2jrbEt7B2z-ROFAEY5wFYLmx8SeQAgJgHCGZZZTofseTeK8nBFp3U18QrKyPF063uGIDp1WxvAsukNpEcW-_jaNCWnxFYvqQ32gZW2VuTU0qH9hDZ8">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"></div>
+<div class="absolute bottom-8 left-8 right-8">
+<h5 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Volunteer</h5>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Shift management, task assignment, and site navigation.</p>
+<div class="mt-4 w-full h-1 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-0 group-hover:w-full transition-all duration-500"></div>
+</div>
+</div>
+</div>
+<!-- Staff Card -->
+<div class="group relative aspect-[4/5] glass-card rounded-[32px] overflow-hidden cursor-pointer">
+<div class="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity">
+<img class="object-cover h-full w-full" data-alt="Professional logistics staff monitoring large holographic display panels in a high-tech control center. Cinematic lighting with blue and teal highlights. The mood is focused and efficient. The visual style is reminiscent of high-end spatial computing interfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAquWVu4GCek32cIsdl9Nzw88v_RcvlPFmchXSqfNR86k40X27P5B-8KZ2lW0BTsPFJPMkpMfWkFSLbTSafG4SD_8Gu_iq60WaMYF2_8J2kLjurH8_kTyMv81jrWBFRboLaN9PtKlQoFOx0FAwVeUngqrQ3wg6Z5WnD7o5qg8S__U_kBq_7q4JupM75a7LcIiLK2zwLV007TjEATE3GV3QkjrHDwEWf1XTKxtt3O4fX5nMW9kJra64YhDdvdQ5yG01s1lKfy17Tu_U">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"></div>
+<div class="absolute bottom-8 left-8 right-8">
+<h5 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Staff</h5>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Operational dashboards and incident management systems.</p>
+<div class="mt-4 w-full h-1 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-0 group-hover:w-full transition-all duration-500"></div>
+</div>
+</div>
+</div>
+<!-- Admin Card -->
+<div class="group relative aspect-[4/5] glass-card rounded-[32px] overflow-hidden cursor-pointer">
+<div class="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity">
+<img class="object-cover h-full w-full" data-alt="An executive-level command center with a panoramic view of a night-time digital city grid. Abstract light trails represent data flow. The aesthetic is sophisticated and minimalist, using a dark-mode palette of black, deep charcoal, and neon primary accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIIBAH-R7PGgo4BTEnw57IfNxOrD7msqRE09GUVgYc07EDXXlHxYQsW9KRP5gLOCwj_71qt_UZSsDcQOB2QTPV3f5Es_jBm-e3QafjKBVZLwp5NJurgQgZS9KBH-gwnP14Ufgu_0wdOvqPM-uEdfghEt_I_zqWOVBmYUu2JmXAfLs_EnFfXdBbUCpp98bLHcUWk3293A_bJiIDrspn9JUwRHj-OTPNlXlgAmgL6SfYXOibWg8xg_pR8H-5R0Ohne_oFJFiHN131fg">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"></div>
+<div class="absolute bottom-8 left-8 right-8">
+<h5 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Admin</h5>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Global oversight, AI policy control, and emergency override.</p>
+<div class="mt-4 w-full h-1 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-on-surface w-0 group-hover:w-full transition-all duration-500"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="py-24 border-t border-white/5">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
+<div class="max-w-sm">
+<span class="font-headline-lg text-headline-lg font-extrabold text-on-surface block mb-4 tracking-tighter">ArenaOS</span>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-60">
+                        Designing the future of mass human gathering. Distributed intelligence for the world's greatest stage.
+                    </p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-12">
+<div>
+<h6 class="font-label-mono text-label-mono text-primary uppercase mb-6">Platform</h6>
+<ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
+<li class=""><a class="hover:text-primary transition-colors" href="#">Infrastructure</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">AI Models</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">Security</a></li>
+</ul>
+</div>
+<div>
+<h6 class="font-label-mono text-label-mono text-primary uppercase mb-6">Legal</h6>
+<ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
+<li class=""><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">Terms of OS</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">Data Ethics</a></li>
+</ul>
+</div>
+<div>
+<h6 class="font-label-mono text-label-mono text-primary uppercase mb-6">Connect</h6>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 transition-all border border-white/10" href="#">
+<span class="material-symbols-outlined text-[18px]">public</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 transition-all border border-white/10" href="#">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-24 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 opacity-40">
+<p class="font-label-mono text-label-mono uppercase">© 2026 FIFA World Cup™ - Powered by ArenaOS</p>
+<div class="flex items-center gap-4">
+<span class="font-label-mono text-label-mono">Uptime: 99.998%</span>
+<div class="h-2 w-2 rounded-full bg-emerald-400"></div>
+</div>
+</div>
+</footer>
+</main>
+<script>
+        // Magnetic Button Effect
+        document.querySelectorAll('.magnetic-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = `translate(0, 0)`;
+            });
+        });
+
+        // Simple Intersection Observer for scroll reveals
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+    </script>
+
+
+</body></html>

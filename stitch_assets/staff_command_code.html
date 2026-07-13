@@ -1,0 +1,484 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ArenaOS | Staff Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Geist:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        :root {
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(20, 18, 24, 0.6);
+        }
+        body {
+            background-color: #050816;
+            color: #e6e0e9;
+            font-family: 'Geist', sans-serif;
+            overflow: hidden;
+        }
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .glow-emerald {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+        .glow-red {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        .shimmer {
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(207, 188, 255, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scan 8s linear infinite;
+            z-index: 10;
+            pointer-events: none;
+        }
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#1d1b20",
+                      "on-primary-container": "#e0d2ff",
+                      "on-secondary-container": "#bfb2da",
+                      "tertiary": "#e7c365",
+                      "on-secondary-fixed-variant": "#4b4263",
+                      "secondary": "#cdc0e9",
+                      "on-secondary": "#342b4b",
+                      "on-secondary-fixed": "#1f1635",
+                      "on-primary-fixed": "#22005d",
+                      "on-tertiary": "#3e2e00",
+                      "secondary-fixed": "#e9ddff",
+                      "primary-fixed": "#e9ddff",
+                      "surface-tint": "#cfbcff",
+                      "secondary-container": "#4d4465",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-highest": "#36343a",
+                      "on-primary": "#381e72",
+                      "surface-variant": "#36343a",
+                      "outline-variant": "#494551",
+                      "error-container": "#93000a",
+                      "on-error": "#690005",
+                      "on-tertiary-fixed": "#241a00",
+                      "surface-bright": "#3b383e",
+                      "surface": "#141218",
+                      "primary-container": "#6750a4",
+                      "surface-container": "#211f24",
+                      "on-background": "#e6e0e9",
+                      "surface-dim": "#141218",
+                      "tertiary-fixed": "#ffdf93",
+                      "surface-container-high": "#2b292f",
+                      "secondary-fixed-dim": "#cdc0e9",
+                      "on-tertiary-container": "#503d00",
+                      "outline": "#948e9c",
+                      "surface-container-lowest": "#0f0d13",
+                      "tertiary-container": "#c9a74d",
+                      "on-tertiary-fixed-variant": "#594400",
+                      "on-surface-variant": "#cbc4d2",
+                      "error": "#ffb4ab",
+                      "on-primary-fixed-variant": "#4f378a",
+                      "primary-fixed-dim": "#cfbcff",
+                      "inverse-on-surface": "#322f35",
+                      "inverse-primary": "#6750a4",
+                      "inverse-surface": "#e6e0e9",
+                      "on-surface": "#e6e0e9",
+                      "primary": "#cfbcff",
+                      "tertiary-fixed-dim": "#e7c365",
+                      "background": "#141218"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sidebar-width": "280px",
+                      "unit": "4px",
+                      "gutter": "24px",
+                      "margin-safe": "40px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Geist"],
+                      "body-md": ["Geist"],
+                      "headline-lg-mobile": ["Geist"],
+                      "display-xl": ["Geist"],
+                      "label-mono": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "display-xl": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                      "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background selection:bg-primary/30 h-screen flex overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-sidebar-width h-full fixed left-0 top-0 bg-surface/60 backdrop-blur-[20px] border-r border-white/10 flex flex-col py-margin-safe px-gutter z-[60] shadow-[0_0_15px_rgba(207,188,255,0.1)]">
+<div class="mb-12">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary animate-pulse tracking-tighter">ArenaOS</h1>
+<p class="font-label-mono text-label-mono text-on-surface-variant/60">FIFA World Cup 2026</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-4 py-3 px-4 text-primary font-bold bg-primary/10 rounded-full shadow-[0_0_15px_rgba(207,188,255,0.3)] relative before:content-[''] before:absolute before:left-0 before:w-1 before:h-8 before:bg-primary before:rounded-full" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant/70 hover:text-on-surface hover:bg-white/5 transition-all duration-300 rounded-lg" href="#">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+<span class="font-body-md text-body-md">Operations</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant/70 hover:text-on-surface hover:bg-white/5 transition-all duration-300 rounded-lg" href="#">
+<span class="material-symbols-outlined">security</span>
+<span class="font-body-md text-body-md">Security</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant/70 hover:text-on-surface hover:bg-white/5 transition-all duration-300 rounded-lg" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-body-md text-body-md">Logistics</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant/70 hover:text-on-surface hover:bg-white/5 transition-all duration-300 rounded-lg" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-body-md text-body-md">Crowd Control</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant/70 hover:text-on-surface hover:bg-white/5 transition-all duration-300 rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto space-y-4">
+<button class="w-full bg-error-container/20 border border-error/30 text-error font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-error/20 transition-colors">
+<span class="material-symbols-outlined">campaign</span>
+                Emergency Broadcast
+            </button>
+<div class="pt-6 border-t border-white/5 space-y-2">
+<a class="flex items-center gap-4 py-2 px-4 text-on-surface-variant/50 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-mono text-label-mono">Support</span>
+</a>
+<a class="flex items-center gap-4 py-2 px-4 text-on-surface-variant/50 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-mono text-label-mono">Sign Out</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="flex-1 ml-sidebar-width h-full flex flex-col overflow-hidden relative">
+<div class="scanline"></div>
+<!-- Top Navigation Bar -->
+<header class="flex justify-between items-center w-full px-margin-safe py-4 bg-surface/40 backdrop-blur-[40px] border-b border-white/5 sticky top-0 z-50 shadow-xl">
+<div class="flex items-center gap-8">
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-black text-on-surface">Lusail Stadium</h2>
+<p class="font-label-mono text-label-mono text-primary/80 uppercase tracking-widest">Match Day: Semi-Final 01</p>
+</div>
+<div class="flex gap-4">
+<span class="flex items-center gap-2 bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/20 glow-emerald">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+<span class="font-label-mono text-label-mono">Systems Nominal</span>
+</span>
+<span class="flex items-center gap-2 bg-surface-container text-on-surface-variant px-3 py-1 rounded-full border border-white/5">
+<span class="material-symbols-outlined text-[14px]">thermostat</span>
+<span class="font-label-mono text-label-mono">24°C Optimized</span>
+</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<p class="font-body-md text-body-md font-bold text-on-surface">Role: Operations Lead</p>
+<p class="font-label-mono text-label-mono text-on-surface-variant/60">Commander ID: #774-ALPHA</p>
+</div>
+<div class="flex gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-variant/40 hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined">notifications_active</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-variant/40 hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined">smart_toy</span>
+</button>
+</div>
+<div class="w-12 h-12 rounded-full border-2 border-primary/30 p-0.5 overflow-hidden">
+<img class="w-full h-full object-cover rounded-full" data-alt="A professional portrait of a stadium operations commander, a middle-aged woman with intense focused eyes, wearing a sleek black high-tech uniform with subtle glowing FIFA branding. The lighting is cinematic with blue and purple highlights from nearby monitors, emphasizing a high-stakes command center atmosphere. 8k resolution, photorealistic, sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcXbCfkCrjBtm0gwfLZIRwSX007heJyVvHQ8aDqOdooZkFNTGgshaiAdPJ5rn8DJzxjl_9BKoaE5vJOr_uPbwHomHKvfEd0Q0AXhydxUfW9M7aSBUo46-x1uH8hrCA6l4v3jUOKsCbjUXWeDI7B2wLoEvSJNme7hhTm_BFa9axzq9ok1SRVb5Fdf1OJVXrnh2mcH8-XdxC3VjgnYRihoqZCgKWZpgCm2M2jj6Xv02DB3_S2ZKjrTuH1csJwk4gBZiysGIDSs1eSH0">
+</div>
+</div>
+</header>
+<!-- Content Grid -->
+<div class="flex-1 grid grid-cols-12 gap-gutter p-gutter overflow-hidden h-full">
+<!-- Left Side: AI Insights & Alerts -->
+<div class="col-span-3 flex flex-col gap-gutter h-full">
+<!-- AI INSIGHTS BENTO -->
+<div class="glass-panel rounded-3xl p-6 flex flex-col gap-4 shimmer relative overflow-hidden flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-label-mono text-label-mono text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">psychology</span>
+                            PREDICTIVE INSIGHTS
+                        </h3>
+<span class="text-[10px] text-primary/40">LIVE SYNC</span>
+</div>
+<div class="space-y-4 mt-2">
+<div class="p-4 bg-primary/5 border border-primary/10 rounded-2xl">
+<p class="font-body-md text-body-md text-on-primary-container leading-tight">Gate 4 Congestion predicted in <span class="text-tertiary font-bold">15 mins</span></p>
+<p class="text-[11px] text-on-surface-variant/60 mt-2">Action: Reroute Flow-Delta to North Entry</p>
+</div>
+<div class="p-4 bg-white/5 border border-white/5 rounded-2xl">
+<p class="font-body-md text-body-md text-on-surface leading-tight">Hydration Demand Spike in Sector 204</p>
+<p class="text-[11px] text-on-surface-variant/60 mt-2">Inventory Alert: Restock required in 45m</p>
+</div>
+<div class="p-4 bg-white/5 border border-white/5 rounded-2xl">
+<p class="font-body-md text-body-md text-on-surface leading-tight">Metro Arrival: 12,000 PAX incoming</p>
+<p class="text-[11px] text-on-surface-variant/60 mt-2">ETA: 08:12m • Terminal 1 Capacity: 65%</p>
+</div>
+</div>
+<div class="mt-auto">
+<div class="h-24 w-full relative">
+<!-- Mini Wave Chart Placeholder -->
+<div class="absolute inset-x-0 bottom-0 flex items-end justify-between h-full px-2 gap-1">
+<div class="w-full bg-primary/20 rounded-t h-[40%]"></div>
+<div class="w-full bg-primary/30 rounded-t h-[60%]"></div>
+<div class="w-full bg-primary/40 rounded-t h-[85%]"></div>
+<div class="w-full bg-primary/20 rounded-t h-[50%]"></div>
+<div class="w-full bg-primary/50 rounded-t h-[95%]"></div>
+<div class="w-full bg-primary/30 rounded-t h-[70%]"></div>
+<div class="w-full bg-primary/10 rounded-t h-[30%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- REAL-TIME ALERTS -->
+<div class="glass-panel rounded-3xl p-6 h-64 border-red-500/20">
+<h3 class="font-label-mono text-label-mono text-error flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-[16px]">priority_high</span>
+                        CRITICAL ALERTS
+                    </h3>
+<div class="space-y-3">
+<div class="flex items-start gap-3 p-3 bg-error/10 rounded-xl border border-error/20 glow-red">
+<span class="material-symbols-outlined text-error text-[20px]">warning</span>
+<div>
+<p class="text-sm font-bold text-error">Security Breach - Zone B</p>
+<p class="text-[11px] text-on-error-container/70">Unauthorized access at VIP Tunnel 4</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 bg-white/5 rounded-xl border border-white/5">
+<span class="material-symbols-outlined text-tertiary text-[20px]">bolt</span>
+<div>
+<p class="text-sm font-bold text-on-surface">Generator Load Alert</p>
+<p class="text-[11px] text-on-surface-variant/60">Phase 3 nearing 85% capacity</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Center: Map Heatmap -->
+<div class="col-span-6 h-full flex flex-col gap-gutter">
+<div class="glass-panel rounded-3xl flex-1 relative overflow-hidden border-primary/20">
+<!-- Map Mock -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full grayscale opacity-40 brightness-50" data-alt="A detailed architectural blueprint and map of the Lusail Stadium in Qatar from a top-down view. The map is presented in a dark, high-contrast digital interface style with neon blue grid lines and emerald green highlights for open exits. Faint red heat signatures represent dense crowd pockets in the stands and concourses. 8k resolution, futuristic tactical display." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAK9kuOj6yajXAcA_aMSktm3idxRTAW4QweXICcWkj2XIb3LGSsrOc8330vEcbAPN-TqIeYWHnOatSd6we7b4700kZnXWJgZfR6GM8EPJd7UX-mU2e0mS69JSTBFnEuTdhv-2Qc8HN4TeHwVHoy_zEikGdKu7o4TSaGaNK1c_tKhaSb0VSub9sSYKYV7xdH35KURZ9LWbl12vQcac8fvlEkOC6KmIG44M5MjXdBIliCIuG5l8lCeq5C1xeYpg2vifXUYpZpU9t7WKw')"></div>
+<!-- Heatmap Overlay Effect -->
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute top-1/4 left-1/3 w-64 h-64 bg-error/20 blur-[80px] animate-pulse"></div>
+<div class="absolute bottom-1/3 right-1/4 w-48 h-48 bg-primary/20 blur-[60px] animate-pulse" style="animation-delay: 1s"></div>
+</div>
+<!-- Map Overlay Controls -->
+<div class="absolute top-6 left-6 flex gap-2 z-10">
+<button class="bg-surface/80 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10 text-xs font-bold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">layers</span> Layers
+                        </button>
+<button class="bg-surface/80 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10 text-xs font-bold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">person_pin_circle</span> Crowd Density
+                        </button>
+</div>
+<div class="absolute bottom-6 right-6 flex flex-col gap-2 z-10">
+<button class="w-10 h-10 bg-surface/80 backdrop-blur-md rounded-lg border border-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-10 h-10 bg-surface/80 backdrop-blur-md rounded-lg border border-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+<!-- Live Stat Overlays on Map -->
+<div class="absolute top-20 right-8 glass-panel p-4 rounded-2xl w-48 z-10 border-white/5">
+<p class="font-label-mono text-[10px] text-on-surface-variant/60 mb-2">ZONE SECTOR 4A</p>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-2xl font-black text-on-surface">91%</p>
+<p class="text-[10px] text-error font-bold">CAPACITY WARNING</p>
+</div>
+<div class="w-12 h-1 bg-white/10 rounded-full overflow-hidden mb-2">
+<div class="bg-error w-[88%] h-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Panel: Sustainability Metrics -->
+<div class="h-48 grid grid-cols-3 gap-gutter">
+<div class="glass-panel rounded-3xl p-5 flex flex-col justify-between overflow-hidden relative">
+<div class="flex items-center gap-2 text-emerald-400">
+<span class="material-symbols-outlined text-xl">energy_savings_leaf</span>
+<span class="font-label-mono text-label-mono">ENERGY USAGE</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-bold text-on-surface">1.2</span>
+<span class="text-sm text-on-surface-variant mb-1">MW/h</span>
+<span class="ml-auto text-emerald-400 text-xs font-bold flex items-center">
+<span class="material-symbols-outlined text-sm">arrow_downward</span> 12%
+                            </span>
+</div>
+<div class="w-full h-1 bg-white/5 rounded-full mt-4">
+<div class="h-full bg-emerald-500 w-[45%] glow-emerald"></div>
+</div>
+</div>
+<div class="glass-panel rounded-3xl p-5 flex flex-col justify-between">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-xl">commute</span>
+<span class="font-label-mono text-label-mono">METRO FLOW</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-bold text-on-surface">14.8k</span>
+<span class="text-sm text-on-surface-variant mb-1">PAX/hr</span>
+<span class="ml-auto text-primary text-xs font-bold flex items-center">
+<span class="material-symbols-outlined text-sm">arrow_upward</span> 4%
+                            </span>
+</div>
+<div class="flex gap-1 mt-4">
+<div class="flex-1 h-8 bg-primary/10 rounded-sm"></div>
+<div class="flex-1 h-10 bg-primary/20 rounded-sm"></div>
+<div class="flex-1 h-12 bg-primary/40 rounded-sm"></div>
+<div class="flex-1 h-8 bg-primary/20 rounded-sm"></div>
+</div>
+</div>
+<div class="glass-panel rounded-3xl p-5 flex flex-col justify-between">
+<div class="flex items-center gap-2 text-tertiary">
+<span class="material-symbols-outlined text-xl">water_drop</span>
+<span class="font-label-mono text-label-mono">WATER RECLAIM</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-bold text-on-surface">92</span>
+<span class="text-sm text-on-surface-variant mb-1">k Liters</span>
+<span class="ml-auto text-emerald-400 text-xs font-bold flex items-center">OPTIMAL</span>
+</div>
+<div class="w-full h-1 bg-white/5 rounded-full mt-4 flex">
+<div class="h-full bg-tertiary w-[92%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Secondary Panels & Staff -->
+<div class="col-span-3 flex flex-col gap-gutter h-full">
+<!-- SECTOR MONITORING -->
+<div class="glass-panel rounded-3xl p-6 flex flex-col gap-6 flex-1">
+<h3 class="font-label-mono text-label-mono text-on-surface-variant/80">SECTOR STATUS</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold">North Concourse</p>
+<p class="text-[10px] text-on-surface-variant/60">Camera Feeds Active (12/12)</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-emerald-500 glow-emerald"></div>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold">South Platinum Lounge</p>
+<p class="text-[10px] text-on-surface-variant/60">HVAC Adjustment Required</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-tertiary glow-tertiary"></div>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold">West Media Wing</p>
+<p class="text-[10px] text-on-surface-variant/60">Press Overflow: Level 2</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-emerald-500 glow-emerald"></div>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold">East Hospitality</p>
+<p class="text-[10px] text-on-surface-variant/60">Turnstiles Nominal</p>
+</div>
+<div class="w-3 h-3 rounded-full bg-emerald-500 glow-emerald"></div>
+</div>
+</div>
+<div class="mt-auto">
+<div class="p-4 bg-white/5 rounded-2xl border border-white/5">
+<p class="font-label-mono text-[10px] text-primary mb-3">STAFF DISPATCH</p>
+<div class="flex -space-x-3 overflow-hidden mb-3">
+<img class="inline-block h-8 w-8 rounded-full ring-2 ring-surface" data-alt="Close up face of a male security guard with headset, professional expression, cinematic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhB2Jnuq1FFNflG-bbYcVb123-o3uUFys7OoLcFF7tYk43nrXe-P9TOQfY7tvcPWXfDLhRE1FrAp-vHfE393oYZdky1j7Tg_DBGRXED4U4y27l8O1T6DxhVGC_-Wpsh-laVIGbTbibAVkbp2NWkwtg9KfeDaGGEEO-dCw80oD7gFvkmC3dIDDF2jKwCwWCe1Ep8Op0AGHEKPDWmdXqt1wOIhdspXvjuizIIpTOqT6uBx_j2SFejybITmapNlJQXGMGrbwGq5hZqVw">
+<img class="inline-block h-8 w-8 rounded-full ring-2 ring-surface" data-alt="Close up face of a female medical responder in uniform, calm and ready expression, professional stadium environment lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzVAM9Tcipx76bzbToyXsauZbRUACy3Kynw--mWizXtRE_i7Tn-98YQQQ2UDL9OaGKoaPn_-Fz4yXRe_eT4JFqGQkdIZryTEP8oORnabmibVf2B71eo5KLOlHIom--_tzqKiTh3hnZFRVf8-NplEu7Bn4okaB8AzGA2o4HMIg_XWb2a1ebiDvOSea6ea5zPMJc6PA38tvlfl0Rrk7S_oldnDDpyMfVENz-xDsq4V3QZdsrUl3v5i3tmxXNspZJUdCmMC-dqhC-A0k">
+<img class="inline-block h-8 w-8 rounded-full ring-2 ring-surface" data-alt="Close up face of a male logistics technician, high-tech uniform, blurred stadium background with glowing lights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV6B5A1I4RfktUIbsxIaN3ACkokv68lC3oTjfBvk_fr-rhFr4jAqR6XwyzqnrnISmNIv85ZIUluRKHtcvpf3S8L8Xzcq2o65X45EdYVZr9m-cBFZDH0Fhveus22FB139fd8IneMaQlj-GxExn0jH_15NSUJK9QumlHP0Kz_QgSlHMlPQwNxMcoJrMEVtLdLekq3009i2GJac0NYZD_ZYshBuLPvLqPcV-KYJskjszBVT5-6klTAUZMceEMIVhVGtG0zr1zAYvSNHg">
+<div class="flex items-center justify-center h-8 w-8 rounded-full bg-primary/20 text-[10px] ring-2 ring-surface text-primary font-bold">+14</div>
+</div>
+<button class="w-full py-2 bg-primary text-background font-bold text-xs rounded-lg hover:scale-[1.02] transition-transform">Re-deploy Squad Charlie</button>
+</div>
+</div>
+</div>
+<!-- LIVE FEED MOCK -->
+<div class="glass-panel rounded-3xl h-64 overflow-hidden relative group">
+<div class="absolute inset-0 bg-black/40 z-10 group-hover:bg-black/20 transition-all"></div>
+<div class="absolute top-4 left-4 z-20 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+<span class="font-label-mono text-[10px] text-white">LIVE: CAM_SEC_092</span>
+</div>
+<img class="w-full h-full object-cover" data-alt="A high-definition grainy security camera view of a massive stadium concourse filled with a diverse crowd of football fans wearing colorful jerseys. The perspective is high-angle, looking down at the moving mass of people. The image has a digital overlay showing box trackers around individuals and flow direction arrows in neon cyan. Cold, clinical lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwaNxMgg4blsuXlxUtdlP_PpFRE1hNabDXPPHRNZmV-MsmBuws0awf7DdxBn2xFYKdJaqcMSElYeoAbwexsXZDrneyAdWVR1AYLlgoI2rXKfO0ceYF1o_34Vtr3ErZjp5_FcRct7oBTh-kcwc97HoAGynfWZeJNb_bt-O8kyu6ej4azRvgsfo-O_vsnvw8Etr0kxO24xAkN3g0bbjUcAe45tJ8EjFVsUbG9sUd_ELf8fSPlSBes37ueYTw-g1usNRWnMyG9Il-Giw">
+<div class="absolute bottom-4 left-4 right-4 z-20 flex justify-between">
+<span class="text-[10px] text-white/60 font-label-mono">08:44:12 UTC</span>
+<span class="text-[10px] text-white/60 font-label-mono">FPS: 60.00</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interactions for the "Magnetic" feel and live updates
+        document.addEventListener('mousemove', (e) => {
+            const glow = document.querySelector('.scanline');
+            if(glow) {
+                // Potential for follow effects if needed
+            }
+        });
+
+        // Simulating data updates
+        setInterval(() => {
+            const randomCapacity = Math.floor(Math.random() * (92 - 85) + 85);
+            const capacityEl = document.querySelector('.col-span-6 .glass-panel p.text-2xl');
+            if(capacityEl) {
+                capacityEl.innerText = randomCapacity + '%';
+            }
+        }, 5000);
+    </script>
+
+
+</body></html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ArenaOS | Fan Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        :root {
+            --primary-glow: rgba(207, 188, 255, 0.3);
+            --danger-glow: rgba(255, 180, 171, 0.4);
+        }
+        body {
+            background-color: #050816;
+            color: #e6e0e9;
+            font-family: 'Geist', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(29, 27, 32, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border: 1px solid rgba(207, 188, 255, 0.3);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        .ticket-gradient {
+            background: linear-gradient(135deg, #6750a4 0%, #381e72 100%);
+        }
+        .scan-line {
+            height: 2px;
+            background: #cfbcff;
+            box-shadow: 0 0 15px #cfbcff;
+            position: absolute;
+            width: 100%;
+            top: 0;
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+        .typing-dot {
+            width: 4px;
+            height: 4px;
+            background: #cfbcff;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        .pulse-red {
+            animation: pulse-danger 2s infinite;
+        }
+        @keyframes pulse-danger {
+            0% { box-shadow: 0 0 0 0 rgba(255, 180, 171, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 180, 171, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 180, 171, 0); }
+        }
+        .sidebar-active-pill {
+            position: relative;
+        }
+        .sidebar-active-pill::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            width: 4px;
+            height: 32px;
+            background: #cfbcff;
+            border-radius: 0 4px 4px 0;
+            box-shadow: 0 0 10px #cfbcff;
+        }
+        /* Hide scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="flex min-h-screen">
+<!-- Side Navigation Bar (Shared Component Strategy) -->
+<aside class="w-sidebar-width h-full fixed left-0 top-0 bg-surface/60 backdrop-blur-[20px] border-r border-white/10 flex flex-col py-margin-safe px-gutter z-50 hidden md:flex">
+<div class="mb-12">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary animate-pulse tracking-tight">ArenaOS</h1>
+<p class="font-label-mono text-label-mono text-on-surface-variant/60 uppercase">FIFA World Cup 2026</p>
+</div>
+<nav class="flex-1 space-y-4">
+<a class="flex items-center gap-4 px-4 py-3 text-primary font-bold bg-primary/10 rounded-full shadow-[0_0_15px_rgba(207,188,255,0.3)] relative before:content-[''] before:absolute before:left-0 before:w-1 before:h-8 before:bg-primary before:rounded-full transition-transform active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant/70 hover:text-on-surface transition-all duration-300 hover:bg-white/5 rounded-xl" href="#">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+<span class="font-body-md text-body-md">Operations</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant/70 hover:text-on-surface transition-all duration-300 hover:bg-white/5 rounded-xl" href="#">
+<span class="material-symbols-outlined">security</span>
+<span class="font-body-md text-body-md">Security</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant/70 hover:text-on-surface transition-all duration-300 hover:bg-white/5 rounded-xl" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-body-md text-body-md">Logistics</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant/70 hover:text-on-surface transition-all duration-300 hover:bg-white/5 rounded-xl" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-body-md text-body-md">Crowd Control</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant/70 hover:text-on-surface transition-all duration-300 hover:bg-white/5 rounded-xl" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-8 border-t border-white/5 space-y-4">
+<button class="w-full py-4 rounded-2xl bg-error/10 text-error font-bold border border-error/20 pulse-red flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">emergency</span>
+                Emergency Broadcast
+            </button>
+<div class="flex items-center gap-4 p-4 rounded-2xl bg-surface-container-high">
+<img class="w-10 h-10 rounded-full border border-primary/30" data-alt="Close up high-resolution profile portrait of a stadium operator wearing technical gear, sharp cinematic lighting, depth of field blur background showing neon stadium lights, tech-focused elite professional aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB05n0PRX1d5QGXICCjd6Kj9kEacOHjE7KJ-nGbOI4pppC8dfZwzDNbazKPgTiewoRLf9vKdOARXPC1qCTLNm_5cD-zLo23-EJcs-7_deH1LqCCsQbApfvf5e0HleJbtnrX8efN-0JYK0fdPSgXadFVvPypbZH3fxPdzjFOc0sT-x-4I2VoAHDI7h9O2aLrvFDfClOFFk6mdBDENDqsW8hKl-wV6_4g1hcIscxC-XJb8csoYDLRXzNtbeaDa4MmUEmSqa1YT7j2Ztk">
+<div>
+<p class="font-body-md text-body-md font-bold">Admin User</p>
+<p class="font-label-mono text-label-mono text-primary/70">Role: Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-[280px] min-h-screen bg-background relative overflow-hidden">
+<!-- Background Shader -->
+
+<!-- Top Nav Bar (Shared Component Strategy) -->
+<header class="flex justify-between items-center w-full px-4 md:px-margin-safe py-4 bg-surface/40 backdrop-blur-[40px] sticky top-0 z-40 border-b border-white/5">
+<div class="flex items-center gap-4">
+<button class="md:hidden p-2 text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-black text-on-surface tracking-tighter">ArenaOS</div>
+</div>
+<div class="hidden md:flex gap-8">
+<a class="text-primary border-b-2 border-primary pb-1 font-body-md text-body-md" href="#">Match Center</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md" href="#">Staffing</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md" href="#">Grid View</a>
+</div>
+<div class="flex items-center gap-3">
+<span class="hidden sm:inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold border border-primary/20">Stadium Pulse</span>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-all"><span class="material-symbols-outlined">notifications_active</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-all"><span class="material-symbols-outlined">smart_toy</span></button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-4 md:p-margin-safe grid grid-cols-1 md:grid-cols-12 gap-gutter relative z-10">
+<!-- Bento Grid Content -->
+<!-- DIGITAL TICKET SECTION -->
+<div class="col-span-1 md:col-span-4 space-y-6">
+<div class="glass-card p-6 overflow-hidden relative group">
+<div class="absolute top-0 right-0 p-4 opacity-20">
+<span class="material-symbols-outlined text-6xl">confirmation_number</span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">local_activity</span>
+                        Your Ticket
+                    </h2>
+<div class="ticket-gradient p-6 rounded-3xl text-white relative shadow-2xl">
+<div class="flex justify-between items-start mb-8">
+<div>
+<p class="text-[10px] uppercase tracking-widest opacity-70">Event</p>
+<p class="text-lg font-bold leading-tight">Quarter Finals<br>Match 54</p>
+</div>
+<img class="h-8" data-alt="Minimalist abstract FIFA World Cup 2026 logo, white vector style on dark background, glowing holographic effect, high-end professional sports branding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqyCRKTBRWmMgk2asalUPYm7YQmNWRLv5txyg_mdnvTk4-iS61Qc89NzQK0EGUSwtoPI9FrsZ0zkaQWL_tahaaCwNfRB7PQlJNEElxn3hsKb9e86lmkmU9ub2qKczTq23GV3osf1GPKinyCUnnge2_u0D7ds87P-vp_LtYyeKGlYGq_QcA8PWSo8a4Pv9WG7TXycJjXq92rY9VflR8-St5VfCshkJdn-dj51dMblW-4r6wIlTBKsgHjhUseJMrgPoiWAhpKk75m7c">
+</div>
+<div class="bg-white p-4 rounded-xl mb-6 relative overflow-hidden">
+<img class="w-full aspect-square opacity-90" data-alt="A high-contrast black and white QR code centered on a clean white background, framed with subtle technical data markers in the corners, digital security aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBnjpadaD2_QJ5nF0vinvWsagVdghjeLWQ87cEGJt1eLZjLJzldNONNuxeGo-3VEuBDvbQz0ZN8-D0RIMvwdrU8PIx0wHw7ai42UaIYfvNYjQRvTZ24UFl7xj_MSoEWc3MKJfebHPHN7T9qHydxvNsY1JiuGwFUNEwyMhDdO-Bhv0k7IhApfEulA22l0nan3jeESErHB5-Feyxtg33lPCU0ng22u7fHV5axZ_h-NlqOv0oE7nGbJgMmiae_8hAAWib2LBYPW9bWAI">
+<div class="scan-line"></div>
+</div>
+<div class="grid grid-cols-3 gap-2 text-center">
+<div><p class="text-[10px] opacity-70">GATE</p><p class="font-bold">B4</p></div>
+<div><p class="text-[10px] opacity-70">SEC</p><p class="font-bold">102</p></div>
+<div><p class="text-[10px] opacity-70">ROW</p><p class="font-bold">12</p></div>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 bg-surface-container-high py-3 rounded-xl font-bold flex items-center justify-center gap-2 text-sm hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm">share</span> Share
+                        </button>
+<button class="flex-1 bg-surface-container-high py-3 rounded-xl font-bold flex items-center justify-center gap-2 text-sm hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm">download</span> Wallet
+                        </button>
+</div>
+</div>
+<!-- FOOD & DRINK QUEUES -->
+<div class="glass-card p-6">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-bold mb-4 flex items-center justify-between">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-tertiary">restaurant</span> Dining</span>
+<span class="text-xs font-label-mono text-tertiary uppercase tracking-tighter">Live Status</span>
+</h2>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">lunch_dining</span>
+</div>
+<div>
+<p class="font-bold text-sm">Elite Burger Bar</p>
+<p class="text-xs text-on-surface-variant">Level 1, West Wing</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-tertiary font-bold">~5 min</p>
+<p class="text-[10px] text-green-400">Short Queue</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">local_bar</span>
+</div>
+<div>
+<p class="font-bold text-sm">Sky Lounge Drinks</p>
+<p class="text-xs text-on-surface-variant">Level 3, Terrace</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-orange-400 font-bold">15 min</p>
+<p class="text-[10px] text-orange-400">Moderate</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- INTERACTIVE STADIUM MAP SECTION -->
+<div class="col-span-1 md:col-span-8 space-y-6">
+<div class="glass-card h-[450px] relative overflow-hidden">
+<div class="absolute inset-0 bg-surface-container-low">
+<img class="w-full h-full object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-700" data-alt="Sophisticated 3D architectural rendering of a futuristic stadium interior map, glowing neon floor pathfinding lines in electric blue, architectural glass and steel textures, cinematic overhead perspective, digital twin interface aesthetic." data-location="Los Angeles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5QUHtGNhviYW8eWF3kLZoAqb0w59Bkhe3cH2MeFjcI0z2Q1D-3Vb_pE7VCbe3xYVXJLy8tawcM_IaP_hwER6CR06hq_WkL-1tuqSdcoK_EMgkdTnc_kXpr115dSC_E2FQxd8-rAQqS1itOnM9bsD6QGVdOuQxmYxfHKwUvFtjZdydpBSKkZdDYC_dCHbE0o4CdLBGorWRBJ0_5Oqw0JizGAzTL4_3riXboWEoJ59C3JDdxQyuFFrBmsgiWHAe3gKirFbcT8dNLXc">
+</div>
+<!-- HUD Overlays for Map -->
+<div class="absolute top-6 left-6 flex flex-col gap-2">
+<div class="bg-surface/80 backdrop-blur-md p-2 rounded-xl border border-white/10 flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary animate-ping"></div>
+<p class="font-label-mono text-xs font-bold">LIVE POSITION: SECTOR 102</p>
+</div>
+</div>
+<div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+<div class="space-y-2">
+<button class="bg-primary text-on-primary px-6 py-3 rounded-full font-bold flex items-center gap-2 shadow-lg active:scale-95 transition-transform" onclick="togglePath()">
+<span class="material-symbols-outlined">near_me</span>
+                                Find My Seat
+                            </button>
+</div>
+<div class="flex flex-col gap-2">
+<button class="w-10 h-10 rounded-full bg-surface/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-on-surface hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-on-surface hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-on-surface hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">layers</span>
+</button>
+</div>
+</div>
+<!-- Pathfinding Animation Overlay (SVG simulated) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" id="path-svg" style="display: none;">
+<path d="M100,400 Q200,350 400,300 T600,100" fill="none" stroke="url(#gradient-path)" stroke-dasharray="1000" stroke-dashoffset="1000" stroke-width="4">
+<animate attributeName="stroke-dashoffset" dur="2s" fill="freeze" from="1000" to="0"></animate>
+</path>
+<defs>
+<linearGradient id="gradient-path" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#cfbcff;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#6750a4;stop-opacity:1"></stop>
+</linearGradient>
+</defs>
+<circle class="shadow-xl" fill="#cfbcff" r="6">
+<animateMotion dur="2s" path="M100,400 Q200,350 400,300 T600,100" repeatCount="indefinite"></animateMotion>
+</circle>
+</svg>
+</div>
+<!-- AI ASSISTANT SECTION -->
+<div class="glass-card flex flex-col h-[380px]">
+<div class="p-4 border-b border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div>
+<p class="font-bold text-sm">StadiumAI Guide</p>
+<p class="text-[10px] text-primary">Always active</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-white">more_vert</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar" id="chat-messages">
+<div class="flex gap-3 max-w-[80%]">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">smart_toy</span>
+</div>
+<div class="bg-surface-container-high p-3 rounded-2xl rounded-tl-none">
+<p class="text-sm">Welcome back! I see you're in Sector 102. The match starts in 45 minutes. Would you like directions to the nearest snack bar?</p>
+</div>
+</div>
+<div class="flex gap-3 max-w-[80%] ml-auto flex-row-reverse">
+<div class="bg-primary/20 p-3 rounded-2xl rounded-tr-none text-primary">
+<p class="text-sm">Yes, please. And where is the nearest restroom?</p>
+</div>
+</div>
+<div class="flex gap-3 max-w-[80%]" id="typing-indicator">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">smart_toy</span>
+</div>
+<div class="bg-surface-container-high p-3 rounded-2xl rounded-tl-none flex items-center gap-1">
+<div class="typing-dot"></div>
+<div class="typing-dot"></div>
+<div class="typing-dot"></div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-white/5 border-t border-white/5 flex gap-2">
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-sm font-body-md text-on-surface" id="chat-input" placeholder="Ask anything about the stadium..." type="text">
+<button class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button for Emergency -->
+<button class="md:hidden fixed bottom-24 right-6 w-14 h-14 rounded-full bg-error text-on-error shadow-2xl flex items-center justify-center z-50 pulse-red active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-3xl">emergency</span>
+</button>
+<!-- Bottom Nav Bar (Mobile Only - Shared Component Strategy) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-surface/80 backdrop-blur-xl border-t border-white/5 flex items-center justify-around px-4 z-50">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[10px] font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px]">Map</span>
+</button>
+<div class="relative -top-4">
+<button class="w-14 h-14 rounded-full bg-primary text-on-primary shadow-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">qr_code_scanner</span>
+</button>
+</div>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="text-[10px]">Order</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px]">Profile</span>
+</button>
+</nav>
+<script>
+        function togglePath() {
+            const svg = document.getElementById('path-svg');
+            if (svg.style.display === 'none') {
+                svg.style.display = 'block';
+            } else {
+                svg.style.display = 'none';
+            }
+        }
+
+        // Simulate AI interaction
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+        const typingIndicator = document.getElementById('typing-indicator');
+
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && this.value.trim() !== '') {
+                const text = this.value;
+                this.value = '';
+                
+                // Add user message
+                const userMsg = document.createElement('div');
+                userMsg.className = 'flex gap-3 max-w-[80%] ml-auto flex-row-reverse';
+                userMsg.innerHTML = `
+                    <div class="bg-primary/20 p-3 rounded-2xl rounded-tr-none text-primary">
+                        <p class="text-sm">${text}</p>
+                    </div>
+                `;
+                chatMessages.insertBefore(userMsg, typingIndicator);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Show typing, then reply
+                typingIndicator.style.display = 'flex';
+                setTimeout(() => {
+                    const aiMsg = document.createElement('div');
+                    aiMsg.className = 'flex gap-3 max-w-[80%]';
+                    aiMsg.innerHTML = `
+                        <div class="w-8 h-8 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-xs">smart_toy</span>
+                        </div>
+                        <div class="bg-surface-container-high p-3 rounded-2xl rounded-tl-none">
+                            <p class="text-sm">I've highlighted the fastest route to Sector 102 for you. Restrooms are located just 20 meters past the Elite Burger Bar on your right.</p>
+                        </div>
+                    `;
+                    chatMessages.insertBefore(aiMsg, typingIndicator);
+                    typingIndicator.style.display = 'none';
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 2000);
+            }
+        });
+    </script>
+
+
+</body></html>

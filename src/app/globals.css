@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #141218;
+  --color-foreground: #e6e0e9;
+  --color-card: #211f24;
+  --color-card-foreground: #e6e0e9;
+  --color-popover: #0f0d13;
+  --color-popover-foreground: #e6e0e9;
+  --color-primary: #cfbcff;
+  --color-primary-foreground: #381e72;
+  --color-secondary: #cdc0e9;
+  --color-secondary-foreground: #e6e0e9;
+  --color-muted: #1d1b20;
+  --color-muted-foreground: #cbc4d2;
+  --color-accent: #2b292f;
+  --color-accent-foreground: #e6e0e9;
+  --color-destructive: #ffb4ab;
+  --color-destructive-foreground: #690005;
+  --color-border: #494551;
+  --color-input: #1d1b20;
+  --color-ring: #cfbcff;
+  
+  --radius-lg: 1rem;
+  --radius-md: 0.75rem;
+  --radius-sm: 0.5rem;
+
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
+}
+
+@layer utilities {
+  /* Stitch Mid Glass Tier - 20px blur, 60% opacity fill */
+  .glass-panel {
+    background: rgba(33, 31, 36, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .glass-card {
+    background: rgba(33, 31, 36, 0.45);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  /* Stitch High Floating Tier - 40px blur, 80% opacity fill */
+  .glass-card-high {
+    background: rgba(43, 41, 47, 0.8);
+    backdrop-filter: blur(40px);
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Active / AI Glow */
+  .neon-glow-primary {
+    box-shadow: 0 0 15px rgba(207, 188, 255, 0.15), 0 0 3px rgba(207, 188, 255, 0.3);
+  }
+
+  .neon-glow-cyan {
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.15), 0 0 3px rgba(6, 182, 212, 0.3);
+  }
+
+  .neon-glow-red {
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.25), 0 0 3px rgba(239, 68, 68, 0.4);
+  }
+
+  .neon-glow-green {
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.2), 0 0 3px rgba(16, 185, 129, 0.35);
+  }
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 4px rgba(207, 188, 255, 0.2), 0 0 10px rgba(207, 188, 255, 0.3);
+  }
+  to {
+    text-shadow: 0 0 8px rgba(207, 188, 255, 0.4), 0 0 20px rgba(207, 188, 255, 0.6);
+  }
+}
+
+body {
+  background-color: #141218;
+  color: #e6e0e9;
+  overflow-x: hidden;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Custom Scrollbar for dashboards */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(20, 18, 24, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(73, 69, 81, 0.8);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(207, 188, 255, 0.5);
+}
