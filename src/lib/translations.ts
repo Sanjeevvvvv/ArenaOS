@@ -121,5 +121,6 @@ export const translations = {
 };
 
 export function getTranslation(lang: Language, key: keyof typeof translations['en']): string {
-  return translations[lang][key] || translations['en'][key];
+  const dict = translations[lang] || translations['en'];
+  return dict[key] || translations['en'][key] || (key as string);
 }
