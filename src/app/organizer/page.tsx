@@ -54,7 +54,8 @@ export default function OrganizerDashboard() {
 
   // Prevent SSR hydration mismatch
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // Compute stats
@@ -187,7 +188,7 @@ Keep your advice highly executive, strategic, focusing on liability, crowd dispe
             <div>
               <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
                 <Sparkles className="h-4 w-4" />
-                AI "What-If" Strategy Center
+                AI &quot;What-If&quot; Strategy Center
               </h3>
               <p className="text-[10px] text-muted-foreground">Run emergency stadium stress tests to receive Gemini strategic directives.</p>
             </div>
@@ -196,7 +197,7 @@ Keep your advice highly executive, strategic, focusing on liability, crowd dispe
             <div className="flex gap-2">
               <select
                 value={selectedScenario}
-                onChange={(e) => setSelectedScenario(e.target.value as any)}
+                onChange={(e) => setSelectedScenario(e.target.value as 'weather' | 'ingress' | 'power')}
                 className="bg-neutral-900 border border-border/40 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none cursor-pointer"
               >
                 <option value="weather">Scenario: Severe Weather</option>

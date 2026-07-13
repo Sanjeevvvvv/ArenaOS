@@ -2,14 +2,15 @@ class SoundManager {
   private ctx: AudioContext | null = null;
   private emergencyOsc: OscillatorNode | null = null;
   private emergencyGain: GainNode | null = null;
-  private emergencyInterval: any = null;
+  private emergencyInterval: ReturnType<typeof setInterval> | null = null;
   private muted: boolean = false;
 
   private initCtx() {
     try {
       if (this.muted) return null;
       if (!this.ctx && typeof window !== 'undefined') {
-        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        const AudioContextClass = window.AudioContext || 
+          (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
         if (AudioContextClass) {
           this.ctx = new AudioContextClass();
         }

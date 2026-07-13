@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore, type UserRole } from '@/store/useAppStore';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { 
   ShieldAlert, 
   User, 
@@ -37,9 +37,19 @@ export function Header() {
   } = useAppStore();
   const router = useRouter();
   
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return soundManager.isMuted();
+    }
+    return false;
+  });
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.scrollY > 10;
+    }
+    return false;
+  });
   
   // Custom dropdown states
   const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
@@ -50,11 +60,6 @@ export function Header() {
   const langRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setMuted(soundManager.isMuted());
-      setScrolled(window.scrollY > 10);
-    }
-
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };

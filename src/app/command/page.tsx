@@ -78,17 +78,16 @@ export default function CommandCenter() {
   const logEndRef = useRef<HTMLDivElement>(null);
 
   // Audio mute state
-  const [isMuted, setIsMuted] = useState(false);
-
-  useEffect(() => {
-    setIsMuted(soundManager.isMuted());
-  }, []);
+  const [isMuted, setIsMuted] = useState(() => typeof window !== 'undefined' ? soundManager.isMuted() : false);
 
   // Update terminal logs during metrics changes (ticks)
   useEffect(() => {
     const time = new Date().toLocaleTimeString();
     const newLogEntry = `[${time}] TELEMETRY: Ingress velocity is ${metrics.gateThroughput} p/m. Attendance: ${metrics.totalAttendance.toLocaleString()}. Solar Grid: ${metrics.energySolarPercent}%.`;
-    setLogs((prev) => [...prev.slice(-30), newLogEntry]); // keep last 30 entries
+    const timer = setTimeout(() => {
+      setLogs((prev) => [...prev.slice(-30), newLogEntry]); // keep last 30 entries
+    }, 0);
+    return () => clearTimeout(timer);
   }, [metrics]);
 
   // Update terminal logs when alerts change
@@ -97,7 +96,10 @@ export default function CommandCenter() {
     const activeAlerts = alerts.filter(a => a.status === 'active');
     if (activeAlerts.length > 0) {
       const newLogEntry = `[${time}] WARNING: ${activeAlerts.length} unresolved safety alert(s) in database. Check radar coordinates.`;
-      setLogs((prev) => [...prev.slice(-30), newLogEntry]);
+      const timer = setTimeout(() => {
+        setLogs((prev) => [...prev.slice(-30), newLogEntry]);
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [alerts]);
 
@@ -325,7 +327,7 @@ Keep your advice highly tactical, structured, and geared toward security staff. 
               {['CAM-01', 'CAM-02', 'CAM-03', 'CAM-04'].map((cam) => (
                 <button
                   key={cam}
-                  onClick={() => { soundManager.playClick(); setActiveCam(cam as any); }}
+                  onClick={() => { soundManager.playClick(); setActiveCam(cam as 'CAM-01' | 'CAM-02' | 'CAM-03' | 'CAM-04'); }}
                   className={`px-2 py-1 rounded border transition ${
                     activeCam === cam 
                       ? 'bg-rose-950/40 border-rose-500 text-rose-400 font-bold' 
@@ -349,7 +351,7 @@ Keep your advice highly tactical, structured, and geared toward security staff. 
 
             {/* Video overlay indicators */}
             <div className="absolute top-3 left-3 z-20 text-[9px] font-mono text-emerald-400 tracking-wider bg-neutral-950/80 px-2 py-0.5 rounded border border-border/30">
-              REC // {activeCam} // {cameraLabels[activeCam]}
+              {"REC // "}{activeCam}{" // "}{cameraLabels[activeCam]}
             </div>
 
             <div className="absolute top-3 right-3 z-20 text-[9px] font-mono text-emerald-400 bg-neutral-950/80 px-2 py-0.5 rounded border border-border/30">

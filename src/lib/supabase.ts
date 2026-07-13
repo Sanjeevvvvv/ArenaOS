@@ -13,7 +13,7 @@ class MockSupabaseClient {
       }
       return { data: { user: null }, error: null };
     },
-    signUp: async ({ email, password, options }: any) => {
+    signUp: async ({ email, password, options }: { email: string; password?: string; options?: { data?: Record<string, unknown> } }) => {
       const user = {
         id: `usr-${Math.random().toString(36).substr(2, 9)}`,
         email,
@@ -25,7 +25,7 @@ class MockSupabaseClient {
       }
       return { data: { user }, error: null };
     },
-    signInWithPassword: async ({ email, password }: any) => {
+    signInWithPassword: async ({ email, password }: { email: string; password?: string }) => {
       const user = {
         id: 'usr-admin-101',
         email,
@@ -43,7 +43,7 @@ class MockSupabaseClient {
       }
       return { error: null };
     },
-    onAuthStateChange: (callback: any) => {
+    onAuthStateChange: (callback: (event: string, session: unknown) => void) => {
       // Return unsubscribe dummy function
       return {
         data: {
@@ -64,7 +64,7 @@ class MockSupabaseClient {
       eq: () => this,
       order: () => this,
       single: async () => ({ data: null, error: null }),
-      then: (resolve: any) => resolve({ data: [], error: null })
+      then: (resolve: (val: { data: Record<string, unknown>[]; error: null }) => void) => resolve({ data: [], error: null })
     };
   }
 
@@ -76,7 +76,6 @@ class MockSupabaseClient {
   }
 }
 
-// Export active Supabase client based on configuration
 export const supabase = (supabaseUrl && supabaseAnonKey)
   ? createClient(supabaseUrl, supabaseAnonKey)
-  : (new MockSupabaseClient() as any);
+  : (new MockSupabaseClient() as unknown as ReturnType<typeof createClient>);

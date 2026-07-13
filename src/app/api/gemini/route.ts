@@ -201,7 +201,7 @@ export async function POST(req: Request) {
       parts: [{ text: msg.content }]
     }));
 
-    const apiBody: any = { 
+    const apiBody = { 
       contents,
       systemInstruction: {
         parts: [{ text: localizedSystemInstruction }]
@@ -223,7 +223,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ content: reply, note: 'Responded via mock fallback due to Gemini API failure.' });
     }
 
-    const data = await res.json();
+    const data = await res.json() as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
     const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!replyText) {
@@ -231,10 +231,10 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ content: replyText });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error in API Gemini route:', error);
     return NextResponse.json({ 
-      content: `I encountered an internal error while processing your request. Detail: ${error?.message || 'unknown'}` 
+      content: `I encountered an internal error while processing your request. Detail: ${error instanceof Error ? error.message : 'unknown'}` 
     });
   }
 }

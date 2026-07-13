@@ -51,7 +51,8 @@ export default function OperationsDashboard() {
 
   // Prevent SSR hydration mismatch on charts
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleCreateTask = (e: React.FormEvent) => {
@@ -165,7 +166,7 @@ export default function OperationsDashboard() {
               <label className="text-[10px] uppercase font-semibold text-muted-foreground">Category</label>
               <select
                 value={newTaskCat}
-                onChange={(e) => setNewTaskCat(e.target.value as any)}
+                onChange={(e) => setNewTaskCat(e.target.value as 'cleaning' | 'restocking' | 'assistance' | 'maintenance')}
                 className="w-full bg-neutral-900 border border-white/10 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500/50 text-white cursor-pointer"
               >
                 <option value="cleaning">Cleaning</option>
@@ -179,7 +180,7 @@ export default function OperationsDashboard() {
               <label className="text-[10px] uppercase font-semibold text-muted-foreground">Priority</label>
               <select
                 value={newTaskPriority}
-                onChange={(e) => setNewTaskPriority(e.target.value as any)}
+                onChange={(e) => setNewTaskPriority(e.target.value as 'low' | 'medium' | 'high')}
                 className="w-full bg-neutral-900 border border-white/10 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500/50 text-white cursor-pointer"
               >
                 <option value="low">Low</option>

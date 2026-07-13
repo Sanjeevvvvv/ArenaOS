@@ -31,7 +31,13 @@ import { useInView } from 'framer-motion';
 const CountUpNumber = ({ value, duration = 1.8 }: { value: number; duration?: number }) => {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-50px' });
-  const [displayValue, setDisplayValue] = useState(0);
+  const [displayValue, setDisplayValue] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      return prefersReducedMotion ? value : 0;
+    }
+    return 0;
+  });
 
   useEffect(() => {
     if (!inView) return;
@@ -40,11 +46,10 @@ const CountUpNumber = ({ value, duration = 1.8 }: { value: number; duration?: nu
     const prefersReducedMotion = typeof window !== 'undefined' && 
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
-      setDisplayValue(value);
       return;
     }
 
-    let start = 0;
+    const start = 0;
     const end = value;
     const stepTime = Math.max(12, Math.floor((duration * 1000) / 120)); // cap refresh cycles
     let current = start;
@@ -69,9 +74,14 @@ const CountUpNumber = ({ value, duration = 1.8 }: { value: number; duration?: nu
 // B. Live Counter component to simulate micro-flickering metric fluctuations (sensor ticking)
 const LiveCounter = ({ base, range, decimals = 0, suffix = '', interval = 2500 }: { base: number, range: number, decimals?: number, suffix?: string, interval?: number }) => {
   const [val, setVal] = useState(base);
+  const [prevBase, setPrevBase] = useState(base);
+
+  if (base !== prevBase) {
+    setVal(base);
+    setPrevBase(base);
+  }
 
   useEffect(() => {
-    setVal(base);
     const timer = setInterval(() => {
       const delta = (Math.random() * 2 - 1) * range;
       setVal(base + delta);
@@ -386,8 +396,19 @@ const accentClasses: Record<string, {
   }
 };
 
+interface PortalCardProps {
+  role: UserRole;
+  path: string;
+  imgSrc: string;
+  title: string;
+  desc: string;
+  accent: string;
+  badgeText: string;
+  navigateToRole: (role: UserRole, path: string) => void;
+}
+
 // 4. React Magnetic Portal Card Component (Cropping top portion of Stitch screenshot assets to eliminate double headers)
-const PortalCard = ({ role, path, imgSrc, title, desc, accent, badgeText, navigateToRole }: any) => {
+const PortalCard = ({ role, path, imgSrc, title, desc, accent, badgeText, navigateToRole }: PortalCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState('translate(0px, 0px)');
   const [hovered, setHovered] = useState(false);
@@ -468,13 +489,8 @@ const PortalCard = ({ role, path, imgSrc, title, desc, accent, badgeText, naviga
 export default function Home() {
   const { metrics, alerts, setRole, language } = useAppStore();
   const router = useRouter();
-  const [mounted, setMounted] = useState(false);
   const portalsRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const navigateToRole = (role: UserRole, path: string) => {
     soundManager.playModeSound(role);
@@ -849,7 +865,7 @@ export default function Home() {
           <div className="max-w-sm">
             <span className="text-lg font-black text-white block mb-4 tracking-tighter uppercase">ArenaOS</span>
             <p className="text-xs text-neutral-500 leading-relaxed">
-              Designing the cognitive infrastructure layer for mass human gathering. Distributed security, logistics, and telemetry for the world's greatest stage.
+              Designing the cognitive infrastructure layer for mass human gathering. Distributed security, logistics, and telemetry for the world&apos;s greatest stage.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-12 text-xs">

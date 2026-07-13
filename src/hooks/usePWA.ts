@@ -1,16 +1,25 @@
 import { useEffect, useState } from 'react';
 
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
+
 export function usePWA() {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstallable, setIsInstallable] = useState(false);
-  const [isInstalled, setIsInstalled] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(display-mode: standalone)').matches;
+    }
+    return false;
+  });
 
   useEffect(() => {
-    // Check if already in standalone mode (installed)
-    if (typeof window !== 'undefined') {
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-      setIsInstalled(isStandalone);
-    }
 
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();

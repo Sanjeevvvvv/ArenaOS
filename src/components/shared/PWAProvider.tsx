@@ -7,7 +7,12 @@ import { Download, X, WifiOff } from 'lucide-react';
 export function PWAProvider({ children }: { children: React.ReactNode }) {
   const { isInstallable, installApp } = usePWA();
   const [showBanner, setShowBanner] = useState(false);
-  const [isOffline, setIsOffline] = useState(false);
+  const [isOffline, setIsOffline] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return !navigator.onLine;
+    }
+    return false;
+  });
 
   useEffect(() => {
     // Service Worker Manager
@@ -40,7 +45,6 @@ export function PWAProvider({ children }: { children: React.ReactNode }) {
 
     // Monitor Network Connectivity
     if (typeof window !== 'undefined') {
-      setIsOffline(!navigator.onLine);
       const goOnline = () => setIsOffline(false);
       const goOffline = () => setIsOffline(true);
 
@@ -56,7 +60,8 @@ export function PWAProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isInstallable) {
-      setShowBanner(true);
+      const timer = setTimeout(() => setShowBanner(true), 150);
+      return () => clearTimeout(timer);
     }
   }, [isInstallable]);
 
