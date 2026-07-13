@@ -25,6 +25,9 @@
   --radius-md: 0.75rem;
   --radius-sm: 0.5rem;
 
+  --font-sans: var(--font-outfit), sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+
   --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   --animate-glow: glow 2s ease-in-out infinite alternate;
 }
@@ -78,6 +81,7 @@
 }
 
 body {
+  font-family: var(--font-outfit), sans-serif;
   background-color: #141218;
   color: #e6e0e9;
   overflow-x: hidden;

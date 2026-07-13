@@ -744,12 +744,12 @@ export default function Home() {
             </div>
 
             {/* Bento 2: Indoor Navigation (Equal Weight) */}
-            <div className="md:col-span-4 md:row-span-1 glass-panel rounded-3xl p-8 flex flex-col justify-between items-start hover:bg-white/5 transition border border-border/30">
-              <div className="p-3 bg-teal-500/15 rounded-2xl text-teal-400 border border-teal-500/20">
+            <div className="md:col-span-4 md:row-span-1 glass-panel rounded-3xl p-8 flex flex-col justify-between items-start hover:bg-white/5 transition border border-border/30 group cursor-pointer">
+              <div className="p-3 bg-teal-500/15 rounded-2xl text-teal-400 border border-teal-500/20 transition-transform duration-500 group-hover:rotate-45">
                 <Compass className="h-6 w-6" />
               </div>
               <div className="space-y-2 mt-4">
-                <h4 className="text-base font-bold text-white">Indoor Navigation</h4>
+                <h4 className="text-base font-bold text-white transition-colors group-hover:text-teal-400">Indoor Navigation</h4>
                 <p className="text-xs text-muted-foreground leading-relaxed">
                   Hyper-precise wayfinding with AR overlays for concessions, seats, and accessibility routes.
                 </p>
@@ -758,12 +758,12 @@ export default function Home() {
             </div>
 
             {/* Bento 3: Transit Hub (Equal Weight) */}
-            <div className="md:col-span-4 md:row-span-1 glass-panel rounded-3xl p-8 flex flex-col justify-between items-start hover:bg-white/5 transition border border-border/30">
-              <div className="p-3 bg-blue-500/15 rounded-2xl text-blue-400 border border-blue-500/20">
+            <div className="md:col-span-4 md:row-span-1 glass-panel rounded-3xl p-8 flex flex-col justify-between items-start hover:bg-white/5 transition border border-border/30 group cursor-pointer">
+              <div className="p-3 bg-blue-500/15 rounded-2xl text-blue-400 border border-blue-500/20 transition-transform duration-500 group-hover:translate-x-1.5">
                 <Train className="h-6 w-6" />
               </div>
               <div className="space-y-2 mt-4">
-                <h4 className="text-base font-bold text-white">Transportation Hub</h4>
+                <h4 className="text-base font-bold text-white transition-colors group-hover:text-blue-400">Transportation Hub</h4>
                 <p className="text-xs text-muted-foreground leading-relaxed">
                   Seamless last-mile logistics sync with city transit systems for 100% efficient exit strategies.
                 </p>
