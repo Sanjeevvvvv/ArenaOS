@@ -560,7 +560,7 @@ export default function Home() {
             </div>
 
             <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white mb-6 uppercase leading-none max-w-5xl">
-              The AI <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Operating System</span> powering FIFA World Cup 2026
+              The AI <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-cyan-400 bg-[size:200%_auto] animate-gradient-move">Operating System</span> powering FIFA World Cup 2026
             </h1>
 
             <p className="text-sm sm:text-base text-neutral-400 max-w-2xl mb-10 leading-relaxed opacity-85">
