@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -13,7 +14,7 @@ class MockSupabaseClient {
       }
       return { data: { user: null }, error: null };
     },
-    signUp: async ({ email, password, options }: { email: string; password?: string; options?: { data?: Record<string, unknown> } }) => {
+    signUp: async ({ email, _password, options }: { email: string; _password?: string; options?: { data?: Record<string, unknown> } }) => {
       const user = {
         id: `usr-${Math.random().toString(36).substr(2, 9)}`,
         email,
@@ -25,7 +26,7 @@ class MockSupabaseClient {
       }
       return { data: { user }, error: null };
     },
-    signInWithPassword: async ({ email, password }: { email: string; password?: string }) => {
+    signInWithPassword: async ({ email, _password }: { email: string; _password?: string }) => {
       const user = {
         id: 'usr-admin-101',
         email,
@@ -43,7 +44,7 @@ class MockSupabaseClient {
       }
       return { error: null };
     },
-    onAuthStateChange: (callback: (event: string, session: unknown) => void) => {
+    onAuthStateChange: (_callback: (event: string, session: unknown) => void) => {
       // Return unsubscribe dummy function
       return {
         data: {
@@ -55,7 +56,7 @@ class MockSupabaseClient {
     }
   };
 
-  from(table: string) {
+  from(_table: string) {
     const queryBuilder = {
       select: () => queryBuilder,
       insert: () => queryBuilder,

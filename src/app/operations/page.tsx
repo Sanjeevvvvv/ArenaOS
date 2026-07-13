@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAppStore, type Task } from '@/store/useAppStore';
+import { useAppStore } from '@/store/useAppStore';
 import { soundManager } from '@/lib/sounds';
 import { getTranslation } from '@/lib/translations';
 import { 
@@ -25,9 +25,7 @@ import {
   TrendingUp,
   Droplet,
   Sun,
-  Volume2,
-  Trash2,
-  Trash
+  Volume2
 } from 'lucide-react';
 
 export default function OperationsDashboard() {

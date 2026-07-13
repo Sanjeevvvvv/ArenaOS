@@ -29,12 +29,10 @@ The FIFA World Cup 2026 GenAI Challenge calls for AI-powered solutions unifying 
 
 - **Strict TypeScript** across the codebase — zero use of `: any` (verified across all source files in `src/`)
 - **No duplicated logic** — shared stores in `src/store/`, shared utilities in `src/lib/`, and shared providers in `src/components/shared/`
-- **Linting**: ESLint configured, `npm run lint` passes with **zero errors**:
+- **Linting**: ESLint configured, `npm run lint` passes with **zero errors and zero warnings**:
 ```
 > arena-os@0.1.0 lint
 > eslint
-
-✖ 55 problems (0 errors, 55 warnings)
 ```
 
 ---

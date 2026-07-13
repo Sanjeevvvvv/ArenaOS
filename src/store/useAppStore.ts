@@ -242,7 +242,7 @@ const initialTransit: TransitItem[] = [
   }
 ];
 
-export const useAppStore = create<AppState>((set, get) => ({
+export const useAppStore = create<AppState>((set) => ({
   role: 'fan',
   emergencyActive: false,
   language: 'en',

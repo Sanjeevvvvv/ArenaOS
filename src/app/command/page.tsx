@@ -10,23 +10,13 @@ import {
   ShieldAlert, 
   Send, 
   Sparkles, 
-  Clock, 
   CheckCircle2, 
-  MapPin, 
-  AlertTriangle, 
-  TrendingUp, 
   Video,
-  Power,
-  ChevronRight,
   Terminal,
   Activity,
-  Cpu,
   Volume2,
   VolumeX,
-  Compass,
-  Zap,
-  Droplet,
-  Volume1
+  Compass
 } from 'lucide-react';
 
 export default function CommandCenter() {
@@ -37,7 +27,6 @@ export default function CommandCenter() {
     addAlert,
     metrics, 
     emergencyActive, 
-    toggleEmergency,
     language
   } = useAppStore();
 
@@ -55,9 +44,6 @@ export default function CommandCenter() {
   const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Evacuation broadcast mock input
-  const [broadcastMessage, setBroadcastMessage] = useState('');
-  const [broadcastStatus, setBroadcastStatus] = useState(false);
 
   // CCTV camera simulator states
   const [activeCam, setActiveCam] = useState<'CAM-01' | 'CAM-02' | 'CAM-03' | 'CAM-04'>('CAM-01');
@@ -184,15 +170,6 @@ Keep your advice highly tactical, structured, and geared toward security staff. 
     });
   };
 
-  const triggerEvacBroadcast = () => {
-    if (!broadcastMessage.trim()) return;
-    setBroadcastStatus(true);
-    setTimeout(() => {
-      setBroadcastStatus(false);
-      setBroadcastMessage('');
-      handleSendChat(`Deploy emergency broadcast: "${broadcastMessage}"`);
-    }, 1500);
-  };
 
   const toggleMute = () => {
     const nextMute = soundManager.toggleMute();

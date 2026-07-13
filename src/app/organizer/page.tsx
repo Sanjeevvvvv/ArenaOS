@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAppStore } from '@/store/useAppStore';
-import { getTranslation } from '@/lib/translations';
-import { sendMessageToGemini, type ChatMessage } from '@/lib/gemini';
+import { sendMessageToGemini } from '@/lib/gemini';
 import { soundManager } from '@/lib/sounds';
 import { 
   AreaChart, 
@@ -17,17 +16,12 @@ import {
 import { 
   LayoutDashboard, 
   Sparkles, 
-  Send, 
   ShieldAlert, 
   Activity, 
   Coins, 
   Users, 
   Lightbulb, 
-  Volume2, 
-  VolumeX, 
-  HelpCircle,
-  KeyRound,
-  FileText
+  KeyRound
 } from 'lucide-react';
 
 export default function OrganizerDashboard() {

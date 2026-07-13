@@ -6,22 +6,11 @@ import Image from 'next/image';
 import { useAppStore, type UserRole } from '@/store/useAppStore';
 import { 
   Users, 
-  Leaf, 
-  Flame, 
-  Map, 
-  ShieldCheck, 
-  Server, 
   ArrowRight,
-  TrendingUp,
-  LayoutDashboard,
   Compass,
   MapPin,
-  Cpu,
-  Tv,
   Train,
-  Sun,
   Activity,
-  Zap,
   Globe
 } from 'lucide-react';
 import { soundManager } from '@/lib/sounds';
@@ -517,7 +506,7 @@ const PortalCard = ({ role, path, imgSrc, title, desc, accent, badgeText, naviga
 };
 
 export default function Home() {
-  const { metrics, alerts, setRole, language } = useAppStore();
+  const { metrics, setRole, language } = useAppStore();
   const router = useRouter();
   const portalsRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);

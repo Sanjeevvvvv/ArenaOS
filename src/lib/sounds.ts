@@ -33,7 +33,7 @@ class SoundManager {
         this.stopEmergencySiren();
       }
       return this.muted;
-    } catch (e) {
+    } catch {
       return this.muted;
     }
   }
@@ -227,7 +227,7 @@ class SoundManager {
       else if (type === 'medical') this.playMedicalAlarm();
       else if (type === 'facility') this.playFacilityWarning();
       else this.playAlert();
-    } catch (e) {}
+    } catch {}
   }
 
   // 4. Low distress beacon pulse (SOS trigger)
@@ -296,7 +296,7 @@ class SoundManager {
             this.emergencyOsc.frequency.linearRampToValueAtTime(450, t + 0.8);
           }
           rising = !rising;
-        } catch (e) {}
+        } catch {}
       }, 850);
     } catch (e) {
       console.warn("startEmergencySiren failed:", e);
@@ -312,7 +312,7 @@ class SoundManager {
       if (this.emergencyOsc) {
         try {
           this.emergencyOsc.stop();
-        } catch (e) {}
+        } catch {}
         this.emergencyOsc.disconnect();
         this.emergencyOsc = null;
       }

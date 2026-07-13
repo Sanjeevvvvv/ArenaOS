@@ -1,23 +1,19 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useAppStore, type TransitItem } from '@/store/useAppStore';
+import { useAppStore } from '@/store/useAppStore';
 import { StadiumMap } from '@/components/map/StadiumMap';
 import { soundManager } from '@/lib/sounds';
 import { findOptimalTransitRoute } from '@/lib/transit';
 import { 
   HeartHandshake, 
-  MapPin, 
   Accessibility, 
   AlertTriangle, 
-  Volume2, 
   Compass, 
   Train, 
   Bus, 
   Car, 
-  VolumeX, 
   Check,
-  Eye,
   Info
 } from 'lucide-react';
 import { getTranslation } from '@/lib/translations';

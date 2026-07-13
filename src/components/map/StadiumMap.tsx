@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useAppStore, type Alert } from '@/store/useAppStore';
-import { MapPin, Info, AlertTriangle, Eye, Compass } from 'lucide-react';
+import { Info, Compass } from 'lucide-react';
 
 interface StadiumMapProps {
   viewMode: 'heatmap' | 'accessibility' | 'standard';
@@ -36,15 +36,6 @@ export function StadiumMap({ viewMode, onSelectAlert }: StadiumMapProps) {
     if (density > 0.8) return 'rgba(239, 68, 68, 0.65)'; // red
     if (density > 0.5) return 'rgba(234, 179, 8, 0.55)'; // yellow
     return 'rgba(16, 185, 129, 0.45)'; // green
-  };
-
-  const getAlertSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'critical': return 'bg-red-600 border-red-300 text-white';
-      case 'high': return 'bg-red-500 border-red-200 text-white';
-      case 'medium': return 'bg-amber-500 border-amber-200 text-white';
-      default: return 'bg-blue-500 border-blue-200 text-white';
-    }
   };
 
   return (
