@@ -3,7 +3,7 @@
 > The AI Operating System for the World's Smartest Stadiums.
 > Built for the FIFA World Cup 2026 GenAI Challenge.
 
-**Live demo:** [https://github.com/Sanjeevvvvv/ArenaOS](https://github.com/Sanjeevvvvv/ArenaOS)
+**Live demo:** [https://arena-os-ochre.vercel.app/](https://arena-os-ochre.vercel.app/)
 **Video walkthrough:** *Available on request / submission package*
 
 ---
