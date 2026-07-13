@@ -131,32 +131,58 @@ const BackgroundShader = () => {
       uniform vec2 mouse;
       varying vec2 uv;
 
+      // Pseudo-random noise for grain
+      float random(vec2 p) {
+        return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+      }
+
       void main() {
         vec2 st = uv;
-        // Deep background color #050816
-        vec3 color1 = vec3(0.02, 0.03, 0.08);
-        vec3 color2 = vec3(0.12, 0.06, 0.22); // Purple accent
-        vec3 color3 = vec3(0.01, 0.16, 0.26); // Teal accent
-
-        float t = time * 0.12;
-        float wave = sin(st.x * 5.0 + t) * cos(st.y * 5.0 - t * 0.6);
         
+        // Define colors from the Grain Gradient preset
+        vec3 colorBack = vec3(0.0, 0.0, 0.0);
+        vec3 c1 = vec3(0.45, 0.0, 1.0);  // #7300ff (Vivid Violet)
+        vec3 c2 = vec3(0.92, 0.63, 1.0); // #eba0ff (Light Lavender)
+        vec3 c3 = vec3(0.0, 0.75, 1.0);  // #00bfff (Vibrant Cyan)
+        vec3 c4 = vec3(0.16, 0.0, 1.0);  // #2a00ff (Deep Blue)
+
+        float t = time * 0.3;
+        
+        // Blob 1 position (moving around top-left)
+        vec2 p1 = vec2(0.15, 0.85) + 0.12 * vec2(sin(t), cos(t * 0.8));
+        // Blob 2 position (moving around bottom-right)
+        vec2 p2 = vec2(0.85, 0.15) + 0.12 * vec2(cos(t * 0.7), sin(t * 0.9));
+        // Blob 3 position (moving around bottom-left)
+        vec2 p3 = vec2(0.15, 0.15) + 0.12 * vec2(sin(t * 0.6), cos(t * 0.5));
+        // Blob 4 position (moving around top-right)
+        vec2 p4 = vec2(0.85, 0.85) + 0.12 * vec2(cos(t), sin(t * 0.8));
+
+        // Distances with softness scale
+        float d1 = smoothstep(0.75, 0.0, distance(st, p1));
+        float d2 = smoothstep(0.75, 0.0, distance(st, p2));
+        float d3 = smoothstep(0.75, 0.0, distance(st, p3));
+        float d4 = smoothstep(0.75, 0.0, distance(st, p4));
+
         // Interactive mouse spot glow
         float distToMouse = distance(st, mouse);
-        float mouseGlow = smoothstep(0.45, 0.0, distToMouse) * 0.35;
+        float mouseGlow = smoothstep(0.35, 0.0, distToMouse);
 
-        vec3 color = mix(color1, color2, clamp(wave * 0.5 + 0.5, 0.0, 1.0));
-        color = mix(color, color3, st.y * 0.25 * sin(t * 0.2));
+        // Mix colors together based on distance weights
+        vec3 finalColor = colorBack;
+        finalColor = mix(finalColor, c1, d1 * 0.55);
+        finalColor = mix(finalColor, c2, d2 * 0.45);
+        finalColor = mix(finalColor, c3, d3 * 0.50);
+        finalColor = mix(finalColor, c4, d4 * 0.50);
         
-        // Blend in the mouse interaction spotlight
-        color += vec3(0.4, 0.3, 0.6) * mouseGlow;
+        // Add interactive mouse glow
+        finalColor += c2 * mouseGlow * 0.20;
 
-        // Subtle tech grid lines
-        vec2 grid = abs(fract(st * 20.0 - 0.5) - 0.5);
-        float line = min(grid.x, grid.y);
-        color += vec3(0.06, 0.18, 0.38) * (1.0 - smoothstep(0.0, 0.025, line)) * 0.15;
+        // Apply Grain Noise (0.25 intensity)
+        float grain = (random(st * (time + 1.0)) - 0.5) * 0.06;
+        finalColor = clamp(finalColor + grain, 0.0, 1.0);
 
-        gl_FragColor = vec4(color, 1.0);
+        // Dim background opacity for readability (opacity 0.6)
+        gl_FragColor = vec4(finalColor * 0.55, 1.0);
       }
     `;
 
