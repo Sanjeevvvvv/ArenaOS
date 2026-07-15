@@ -99,6 +99,98 @@ Vous pouvez me demander:
 * **Accessibilité:** *"Trouver les itinéraires pour fauteuils roulants."*`;
   }
 
+  if (lang === 'de') {
+    if (q.includes('simulate') || q.includes('incident') || q.includes('emergency') || q.includes('evacuate') || q.includes('sos') || q.includes('simul')) {
+      return `### 🚨 ArenaOS Vorfalls-Simulationsbericht
+**Protokoll Aktiv:** Stadion-Notfallaktionsplan (SEAP-2026)
+
+1. **KI-Einsatzbewertung:**
+   - **Auslöser:** Simulierter Vorfall in Sektor F / Tor 3.
+   - **Umleitung:** Evakuierung von Sektor D und F über die North Plaza Tore.
+   - **Personal:** Verlegung von 15 Sicherheitskräften zu Sektor D.
+   - **Sanitätsdienst:** Entsendung von Sanitätseinheit 2 zu Sektor D (ETA 2.5 Minuten).
+
+2. **Empfohlene Maßnahmen:**
+   - [Aktion] Shuttle-Kapazität für Linie 14B erhöhen.
+   - [Aktion] PA-Durchsage: *"Bitte folgen Sie den Ordnern zum Ausgang Nord."*
+   - [Aktion] PWA-Notfallbenachrichtigung mit barrierefreien Fluchtwegen senden.`;
+    }
+    
+    if (q.includes('crowd') || q.includes('gate') || q.includes('bottleneck') || q.includes('people') || q.includes('traffic') || q.includes('stau')) {
+      return `### 📊 Mengenstrom- & Engpassanalyse
+**Analysierter Bereich:** Tor 3 und Sektor D
+
+* **Aktueller Status:** Dichte an Tor 3 erreicht **4,2 Personen/m²** (Kritischer Schwellenwert).
+* **KI-Prognose:** Die vollständige Räumung von Sektor D dauert **24 Minuten**.
+* **Vorgeschlagene Maßnahmen:**
+  1. **Hilfstor 3B öffnen**, um die Durchflusskapazität um 35% zu erhöhen.
+  2. **Digitale Anzeigetafeln aktualisieren**, um Besucher zu Tor 4 umzuleiten (Dichte 1,1 Pers/m²).`;
+    }
+
+    if (q.includes('accessibility') || q.includes('wheelchair') || q.includes('sensory') || q.includes('blind') || q.includes('deaf') || q.includes('elevator') || q.includes('barriere')) {
+      return `### ♿ ArenaOS Universelle Barrierefreiheit
+Konform mit den FIFA- und WCAG AA-Richtlinien.
+
+* **ADA-Routen:** Aufzüge 4 und 9 als stufenlose Routen. Aufzug 4 ist betriebsbereit (Wartezeit: 2 Min).
+* **Ruheraum:** Der Ruheraum (Sektor B, Raum 102) misst ruhige **42 dB** (optimaler Pegel).
+* **SOS-Einsatz:** Bei Aktivierung von SOS wird automatisch ein ADA-Helfer zu Ihren Sitzplatzkoordinaten geschickt.`;
+    }
+
+    return `### Hallo! Ich bin ArenaAI, dein intelligenter Stadion-Kopilot.
+Ich unterstütze dich bei Stadionbetrieb, Besucherführung, Sicherheit und Analysen auf Deutsch.
+
+Frage mich einfach nach:
+* **Besucherströmen:** *"Gibt es Engpässe an Tor 3?"*
+* **Incident-Simulation:** *"Simuliere Notfall in Sektor D."*
+* **Barrierefreiheit:** *"Zeige stufenlose Wege zu Aufzug 4."*`;
+  }
+
+  if (lang === 'pt') {
+    if (q.includes('simulate') || q.includes('incident') || q.includes('emergency') || q.includes('evacuate') || q.includes('sos') || q.includes('simul')) {
+      return `### 🚨 ArenaOS Relatório de Simulação de Incidentes
+**Protocolo Ativo:** Plano de Ação de Emergência do Estádio (SEAP-2026)
+
+1. **Avaliação IA de Despacho:**
+   - **Gatilho:** Relato simulado de incidente no Setor F / Portão 3.
+   - **Desvio:** Evacuação dos espectadores dos Setores D e F pela North Plaza.
+   - **Equipe:** Remanejamento de 15 agentes de segurança para o Setor D.
+   - **Serviço Médico:** Unidade Médica 2 despachada para a Seção 114 (ETA 2.5 minutos).
+
+2. **Ações Recomendadas:**
+   - [Ação] Aumentar capacidade da linha de ônibus 14B com 3 unidades adicionais.
+   - [Ação] Transmitir áudio PA: *"Por favor, siga os orientadores em direção à Saída Norte."*
+   - [Ação] Pressionar alerta PWA de evacuação com rota acessível.`;
+    }
+    
+    if (q.includes('crowd') || q.includes('gate') || q.includes('bottleneck') || q.includes('people') || q.includes('traffic') || q.includes('multid')) {
+      return `### 📊 Análise de Fluxo e Densidade de Público
+**Local analisado:** Portão 3 e Setor D
+
+* **Status Atual:** Densidade no Portão 3 atinge **4.2 pessoas/m²** (Nível Crítico).
+* **Previsão IA:** O tempo total para evacuar o Setor D é de **24 minutos**.
+* **Ações sugeridas:**
+  1. **Abrir o Portão Auxiliar 3B** para aumentar o fluxo de saída em 35%.
+  2. **Atualizar telas de sinalização digital** para direcionar fluxos para o Portão 4 (baixa densidade de 1.1 pers/m²).`;
+    }
+
+    if (q.includes('accessibility') || q.includes('wheelchair') || q.includes('sensory') || q.includes('blind') || q.includes('deaf') || q.includes('elevator') || q.includes('acessib')) {
+      return `### ♿ ArenaOS Suíte de Acessibilidade Universal
+Cumprindo as normas FIFA e diretrizes WCAG AA.
+
+* **Rotas Adaptadas:** Elevadores 4 e 9 designados para cadeiras de rodas (tempo estimado: 2 min).
+* **Espaço Sensorial:** Sala Silenciosa no Setor B (Sala 102) medida em **42 dB** (ideal).
+* **Acionamento SOS:** Ao pressionar SOS, um voluntário de acessibilidade é enviado às suas coordenadas.`;
+    }
+
+    return `### Olá! Sou o ArenaAI, seu copiloto inteligente do estádio.
+Posso ajudar com operações, navegação, segurança e análises em português.
+
+Pergunte-me sobre:
+* **Público:** *"Existe algum gargalo no Portão 3?"*
+* **Simulações:** *"Simular emergência médica no Setor D."*
+* **Acessibilidade:** *"Encontrar rotas sem degraus."*`;
+  }
+
   // DEFAULT ENGLISH
   if (q.includes('simulate') || q.includes('incident') || q.includes('emergency') || q.includes('evacuate') || q.includes('sos')) {
     return `### 🚨 ArenaOS Incident Simulation Report

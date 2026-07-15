@@ -17,9 +17,19 @@ describe('Multilingual Translation Utility', () => {
     expect(text).toBe('Entrer dans le Portail');
   });
 
+  it('should return german translation when de is selected', () => {
+    const text = getTranslation('de', 'enterPortal');
+    expect(text).toBe('Portal Betreten');
+  });
+
+  it('should return portuguese translation when pt is selected', () => {
+    const text = getTranslation('pt', 'enterPortal');
+    expect(text).toBe('Entrar no Portal');
+  });
+
   it('should fallback to english if translation key does not exist in target language', () => {
     // Pass a valid key with a non-existent language
-    const text = getTranslation('de' as 'en', 'enterPortal');
+    const text = getTranslation('it' as 'en', 'enterPortal');
     expect(text).toBe('Enter Portal');
   });
 

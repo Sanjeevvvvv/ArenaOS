@@ -59,17 +59,17 @@ The FIFA World Cup 2026 GenAI Challenge calls for AI-powered solutions unifying 
 
 - **Mock Verification:** Robust validation in Next.js development server to verify role simulations and scenario triggers.
 - **E2E smoke testing:** Performed manual walkthrough runs for each persona route (`/fan`, `/operations`, `/command`, `/organizer`).
-- **Automated Unit Tests:** Vitest configured. `npm test` runs and passes 17 tests across 4 suites with 100% success rate:
+- **Automated Unit Tests:** Vitest configured. `npm test` runs and passes 19 tests across 4 suites with 100% success rate:
 ```
  RUN  v4.1.10 C:/Users/Sanjeev/Documents/ArenaOS
 
  ✓ src/tests/transit.test.ts (3 tests) 6ms
- ✓ src/tests/translations.test.ts (5 tests) 7ms
+ ✓ src/tests/translations.test.ts (7 tests) 11ms
  ✓ src/tests/useAppStore.test.ts (6 tests) 47ms
  ✓ src/tests/supabase.test.ts (3 tests) 7ms
 
  Test Files  4 passed (4)
-      Tests  17 passed (17)
+      Tests  19 passed (19)
 ```
 
 ---

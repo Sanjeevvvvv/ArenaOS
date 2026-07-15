@@ -141,7 +141,9 @@ export function Header() {
   const langLabels: Record<Language, { label: string; flag: string }> = {
     en: { label: 'English (US/CA)', flag: '🇺🇸' },
     es: { label: 'Español (MX)', flag: '🇲🇽' },
-    fr: { label: 'Français (CA)', flag: '🇨🇦' }
+    fr: { label: 'Français (CA)', flag: '🇨🇦' },
+    de: { label: 'Deutsch (DE)', flag: '🇩🇪' },
+    pt: { label: 'Português (BR)', flag: '🇧🇷' }
   };
 
   return (

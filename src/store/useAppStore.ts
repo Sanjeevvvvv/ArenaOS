@@ -59,7 +59,7 @@ interface AppState {
   // Global State
   role: UserRole;
   emergencyActive: boolean;
-  language: 'en' | 'es' | 'fr';
+  language: 'en' | 'es' | 'fr' | 'de' | 'pt';
   
   // Data lists
   alerts: Alert[];
@@ -76,7 +76,7 @@ interface AppState {
   
   // Actions
   setRole: (role: UserRole) => void;
-  setLanguage: (lang: 'en' | 'es' | 'fr') => void;
+  setLanguage: (lang: 'en' | 'es' | 'fr' | 'de' | 'pt') => void;
   setEmergencyActive: (active: boolean) => void;
   toggleEmergency: () => void;
   
