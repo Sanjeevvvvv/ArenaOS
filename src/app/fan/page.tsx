@@ -78,8 +78,20 @@ export default function FanPortal() {
 
   const recommendedTransit = findOptimalTransitRoute(transit) || transit[0];
 
+  const panelClass = highContrastMode 
+    ? "rounded-2xl bg-black border-4 border-yellow-400 p-5 space-y-4 text-yellow-400 font-bold shadow-none" 
+    : "rounded-2xl glass-panel p-5 space-y-4 border border-white/5";
+
+  const textMutedClass = highContrastMode ? "text-white font-bold" : "text-xs text-muted-foreground";
+  const textTitleClass = highContrastMode ? "text-yellow-400 font-black text-xl" : "text-lg font-bold text-white tracking-tight";
+  const listItemClass = highContrastMode 
+    ? "p-3 rounded-xl bg-black border-2 border-yellow-400 text-yellow-400 font-bold" 
+    : "p-3 rounded-xl bg-neutral-900 border border-white/5";
+
   return (
-    <div className="flex-1 p-4 sm:p-6 bg-neutral-950 text-white min-h-[calc(100vh-4rem)] space-y-6">
+    <div className={`flex-1 p-4 sm:p-6 min-h-[calc(100vh-4rem)] space-y-6 transition-colors duration-300 ${
+      highContrastMode ? 'bg-black text-yellow-400 font-bold border-4 border-yellow-400' : 'bg-neutral-950 text-white'
+    }`}>
       
       {/* Title Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-4">
@@ -202,11 +214,11 @@ export default function FanPortal() {
         {/* LEFT COLUMN: Map & Accessibility Controls (8 cols) */}
         <div className="lg:col-span-8 flex flex-col gap-6">
           
-          <div className="rounded-2xl glass-panel p-5 space-y-4 border border-white/5">
+          <div className={panelClass}>
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h2 className="text-lg font-bold text-white tracking-tight">Smart Stadium Indoor Guide</h2>
-                <p className="text-xs text-muted-foreground">Select access overlays or general layout vectors for gate navigation.</p>
+                <h2 className={textTitleClass}>Smart Stadium Indoor Guide</h2>
+                <p className={textMutedClass}>Select access overlays or general layout vectors for gate navigation.</p>
               </div>
 
               {/* Map Layer control */}
@@ -234,7 +246,7 @@ export default function FanPortal() {
           </div>
 
           {/* Accessibility controls Panel */}
-          <div className="rounded-2xl glass-panel p-5 space-y-4 border border-white/5">
+          <div className={panelClass}>
             <h3 className="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5 border-b border-white/5 pb-2">
               <Accessibility className="h-4 w-4" />
               {getTranslation(language, 'accessibilitySuite')}
@@ -323,25 +335,25 @@ export default function FanPortal() {
         <div className="lg:col-span-4 flex flex-col gap-6">
           
           {/* Smart Transit Board */}
-          <div className="rounded-2xl glass-panel p-5 space-y-4 border border-white/5">
+          <div className={panelClass}>
             <div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 border-b border-white/5 pb-2">
                 <Train className="h-4 w-4 text-cyan-400" />
                 {getTranslation(language, 'transitDepartures')}
               </h3>
-              <p className="text-[10px] text-muted-foreground">Outward shuttle schedules and gate flow congestion levels.</p>
+              <p className={textMutedClass}>Outward shuttle schedules and gate flow congestion levels.</p>
             </div>
 
             <div className="space-y-3">
               {transit.map((trn) => (
-                <div key={trn.id} className="p-3 rounded-xl bg-neutral-900 border border-white/5 flex justify-between items-center text-left">
+                <div key={trn.id} className={`${listItemClass} flex justify-between items-center text-left`}>
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-neutral-950 rounded-lg">
                       {getTransitIcon(trn.type)}
                     </div>
                     <div>
                       <div className="text-xs font-semibold text-white uppercase tracking-wide">{trn.line}</div>
-                      <div className="text-[9px] text-muted-foreground">To: {trn.destination}</div>
+                      <div className={textMutedClass}>To: {trn.destination}</div>
                     </div>
                   </div>
                   <div className="text-right">
@@ -371,21 +383,21 @@ export default function FanPortal() {
           </div>
 
           {/* Quick Concession Stands */}
-          <div className="rounded-2xl glass-panel p-5 space-y-4 border border-white/5">
+          <div className={panelClass}>
             <div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 border-b border-white/5 pb-2">
                 <HeartHandshake className="h-4 w-4 text-emerald-400" />
                 Concession line times
               </h3>
-              <p className="text-[10px] text-muted-foreground">Check lines and pre-order via express checkout.</p>
+              <p className={textMutedClass}>Check lines and pre-order via express checkout.</p>
             </div>
 
             <div className="space-y-3">
               {concessions.map((cnc) => (
-                <div key={cnc.id} className="p-3 rounded-xl bg-neutral-900/60 border border-white/5 flex justify-between items-center text-left">
+                <div key={cnc.id} className={`${listItemClass} flex justify-between items-center text-left`}>
                   <div>
                     <div className="text-xs font-semibold text-white uppercase tracking-wide">{cnc.name}</div>
-                    <div className="text-[9px] text-muted-foreground">Popular: {cnc.popularItem}</div>
+                    <div className={textMutedClass}>Popular: {cnc.popularItem}</div>
                   </div>
                   <div className="text-right">
                     <div className={`text-xs font-bold ${
@@ -393,7 +405,7 @@ export default function FanPortal() {
                     }`}>
                       {cnc.waitTime} min line
                     </div>
-                    <div className="text-[9px] text-muted-foreground">{cnc.location}</div>
+                    <div className={textMutedClass}>{cnc.location}</div>
                   </div>
                 </div>
               ))}

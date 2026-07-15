@@ -66,4 +66,22 @@ describe('useAppStore Zustand Store', () => {
     expect(useAppStore.getState().tasks[0].assignedTo).toBe('John Doe');
     expect(useAppStore.getState().tasks[0].status).toBe('in-progress');
   });
+
+  it('should toggle accessibility states correctly', () => {
+    expect(useAppStore.getState().accessibilityMode).toBe(false);
+    useAppStore.getState().setAccessibilityMode(true);
+    expect(useAppStore.getState().accessibilityMode).toBe(true);
+
+    expect(useAppStore.getState().sensoryMapMode).toBe(false);
+    useAppStore.getState().setSensoryMapMode(true);
+    expect(useAppStore.getState().sensoryMapMode).toBe(true);
+
+    expect(useAppStore.getState().audioGuideActive).toBe(false);
+    useAppStore.getState().setAudioGuideActive(true);
+    expect(useAppStore.getState().audioGuideActive).toBe(true);
+
+    expect(useAppStore.getState().highContrastMode).toBe(false);
+    useAppStore.getState().setHighContrastMode(true);
+    expect(useAppStore.getState().highContrastMode).toBe(true);
+  });
 });
