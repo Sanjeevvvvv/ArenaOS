@@ -541,10 +541,12 @@ export default function Home() {
         {/* HERO SECTION */}
         <section aria-label="Hero Section" className="flex flex-col items-center justify-center text-center py-8 min-h-[500px] space-y-8">
           <div className="flex flex-col items-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full bg-white/5 border border-white/10 backdrop-blur-md animate-pulse">
-              <span className="flex h-2 w-2 rounded-full bg-primary glow-pulse"></span>
-              <span className="font-label-mono text-[10px] text-muted-foreground uppercase tracking-widest">
-                {getTranslation(language, 'fifaReady')}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+              <span className="flex h-2 w-2 rounded-full bg-cyan-400 glow-pulse animate-pulse"></span>
+              <span className="font-label-mono text-[10px] text-muted-foreground uppercase tracking-widest flex items-center gap-1.5">
+                <span>{getTranslation(language, 'fifaReady')}</span>
+                <span className="text-white/20">|</span>
+                <span className="text-cyan-400 font-bold">[CHALLENGE 4] Smart Stadiums & Tournament Operations</span>
               </span>
             </div>
 
