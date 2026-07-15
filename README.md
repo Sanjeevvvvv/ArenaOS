@@ -1,16 +1,16 @@
 # ArenaOS
 
 > The AI Operating System for the World's Smartest Stadiums.
-> Built for the FIFA World Cup 2026 GenAI Challenge.
+> Built for the FIFA World Cup 2026 GenAI Challenge — **[Challenge 4] Smart Stadiums & Tournament Operations**.
 
 **Live demo:** [https://arena-os-ochre.vercel.app/](https://arena-os-ochre.vercel.app/)
 **Video walkthrough:** *Available on request / submission package*
 
 ---
 
-## Problem Statement Alignment
+## [Challenge 4] Smart Stadiums & Tournament Operations Alignment
 
-The FIFA World Cup 2026 GenAI Challenge calls for AI-powered solutions unifying fans, volunteers, staff, security, and organizers into a stadium operating ecosystem. ArenaOS addresses this directly:
+ArenaOS is built specifically to address the core objectives of Challenge Vertical 4 (unifying fans, volunteers, staff, security, and organizers into a stadium operating ecosystem):
 
 | Challenge requirement | ArenaOS feature | Where in this repo |
 |---|---|---|
