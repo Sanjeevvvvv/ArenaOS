@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useAppStore, type Alert } from '@/store/useAppStore';
+import { useAppStore } from '@/store/useAppStore';
 import { StadiumMap } from '@/components/map/StadiumMap';
 import { sendMessageToGemini, type ChatMessage } from '@/lib/gemini';
 import { soundManager } from '@/lib/sounds';
@@ -31,7 +31,8 @@ export default function CommandCenter() {
   } = useAppStore();
 
   const [mapMode, setMapMode] = useState<'standard' | 'heatmap' | 'accessibility'>('heatmap');
-  const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
+  const [selectedAlertId, setSelectedAlertId] = useState<string | null>(null);
+  const selectedAlert = alerts.find(a => a.id === selectedAlertId) || null;
   
   // Chat States
   const [chatInput, setChatInput] = useState('');
@@ -168,6 +169,14 @@ Keep your advice highly tactical, structured, and geared toward security staff. 
       status: 'active',
       coordinates: details.coordinates
     });
+
+    // Auto-select the newly created alert
+    setTimeout(() => {
+      const latest = useAppStore.getState().alerts[0];
+      if (latest) {
+        setSelectedAlertId(latest.id);
+      }
+    }, 50);
   };
 
 
@@ -287,7 +296,7 @@ Keep your advice highly tactical, structured, and geared toward security staff. 
 
           <StadiumMap 
             viewMode={mapMode} 
-            onSelectAlert={(alt) => setSelectedAlert(alt)}
+            onSelectAlert={(alt) => setSelectedAlertId(alt.id)}
           />
         </div>
 
@@ -390,9 +399,9 @@ Keep your advice highly tactical, structured, and geared toward security staff. 
               activeAlerts.map((alt) => (
                 <div 
                   key={alt.id}
-                  onClick={() => { soundManager.playClick(); setSelectedAlert(alt); }}
+                  onClick={() => { soundManager.playClick(); setSelectedAlertId(alt.id); }}
                   className={`p-3 rounded-xl border transition cursor-pointer text-left ${
-                    selectedAlert?.id === alt.id 
+                    selectedAlertId === alt.id 
                       ? 'bg-rose-950/20 border-rose-500' 
                       : 'bg-neutral-900/60 border-border/30 hover:bg-neutral-900'
                   }`}
@@ -426,6 +435,7 @@ Keep your advice highly tactical, structured, and geared toward security staff. 
                           onClick={(e) => {
                             e.stopPropagation();
                             resolveAlert(alt.id);
+                            if (selectedAlertId === alt.id) setSelectedAlertId(null);
                           }}
                           className="text-[8px] px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20"
                         >
@@ -438,6 +448,69 @@ Keep your advice highly tactical, structured, and geared toward security staff. 
               ))
             )}
           </div>
+
+          {/* Selected Alert Details Panel */}
+          {selectedAlert && (
+            <div className="p-3.5 rounded-xl bg-neutral-900 border border-rose-500/40 text-left space-y-2.5 animate-in slide-in-from-bottom-2">
+              <div className="flex justify-between items-center border-b border-border/30 pb-1.5">
+                <h4 className="font-bold text-white uppercase tracking-wider flex items-center gap-1 text-[9px]">
+                  <ShieldAlert className="h-3.5 w-3.5 text-rose-400" />
+                  Incident Info & Dispatch
+                </h4>
+                <button 
+                  onClick={() => setSelectedAlertId(null)}
+                  className="text-[10px] text-neutral-400 hover:text-white font-medium"
+                >
+                  Close
+                </button>
+              </div>
+              
+              <div className="space-y-1">
+                <div className="flex justify-between items-start gap-2">
+                  <span className="font-bold text-white text-xs leading-snug">{selectedAlert.title}</span>
+                  <span className={`text-[8px] px-1.5 py-0.2 rounded font-black uppercase shrink-0 ${
+                    selectedAlert.severity === 'critical' || selectedAlert.severity === 'high' ? 'bg-red-950/80 text-red-400 border border-red-500/20' : 'bg-amber-950/80 text-amber-400 border border-amber-500/20'
+                  }`}>
+                    {selectedAlert.severity}
+                  </span>
+                </div>
+                <p className="text-[10px] text-neutral-300 leading-relaxed pt-0.5">{selectedAlert.description}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-[9px] text-neutral-400 pt-2 border-t border-border/30">
+                <div>Loc: <span className="text-white font-semibold">{selectedAlert.location}</span></div>
+                <div>Coords: <span className="text-cyan-400 font-mono font-bold">X:{selectedAlert.coordinates.x.toFixed(0)}% Y:{selectedAlert.coordinates.y.toFixed(0)}%</span></div>
+                <div>Status: <span className={`font-bold capitalize ${selectedAlert.status === 'active' ? 'text-red-400' : 'text-amber-400'}`}>{selectedAlert.status}</span></div>
+                <div>Reported: <span className="text-white">{selectedAlert.timestamp}</span></div>
+              </div>
+
+              <div className="flex gap-2 justify-end pt-1.5">
+                {selectedAlert.status === 'active' && (
+                  <button
+                    onClick={() => {
+                      soundManager.playClick();
+                      updateAlertStatus(selectedAlert.id, 'in-progress');
+                    }}
+                    className="px-2.5 py-1 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40 hover:bg-amber-500/30 transition text-[9px] font-bold"
+                  >
+                    Acknowledge Incident
+                  </button>
+                )}
+                {selectedAlert.status === 'in-progress' && (
+                  <button
+                    onClick={() => {
+                      soundManager.playClick();
+                      resolveAlert(selectedAlert.id);
+                      setSelectedAlertId(null);
+                    }}
+                    className="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/30 transition text-[9px] font-bold"
+                  >
+                    Mark as Resolved
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Gemini Decision Chatbot console */}
