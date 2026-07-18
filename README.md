@@ -1,112 +1,108 @@
 # ArenaOS
 
 > The AI Operating System for the World's Smartest Stadiums.
-> Built for the FIFA World Cup 2026 GenAI Challenge — **[Challenge 4] Smart Stadiums & Tournament Operations**.
+> Built for the FIFA World Cup 2026 GenAI Challenge — Challenge 4: Smart Stadiums & Tournament Operations.
 
-**Live demo:** [https://arena-os-ochre.vercel.app/](https://arena-os-ochre.vercel.app/)
-**Video walkthrough:** *Available on request / submission package*
+**Live demo:** https://arena-os-ochre.vercel.app/
+**Repository:** https://github.com/Sanjeevvvvv/ArenaOS
+**LinkedIn post:** https://www.linkedin.com/posts/sanjeev-pranay_fifa2026-genaichallenge-nextjs-ugcPost-7482479530...
 
 ---
 
-## [Challenge 4] Smart Stadiums & Tournament Operations Alignment
+## Problem Statement Alignment
 
-ArenaOS is built specifically to address the core objectives of Challenge Vertical 4 (unifying fans, volunteers, staff, security, and organizers into a stadium operating ecosystem):
+**Challenge 4: Smart Stadiums & Tournament Operations** calls for an AI-powered system that unifies fans, volunteers, stadium staff, security teams, and organizers into one intelligent operational ecosystem for the tournament. ArenaOS is built directly against that brief — not as a general sports app, but as a Stadium Operating System purpose-built for tournament-scale operations:
 
-| Challenge requirement | ArenaOS feature | Where in this repo |
-|---|---|---|
-| AI Navigation | Gemini-powered wayfinding + accessible-route-first routing | `src/components/map/StadiumMap.tsx`, `src/app/fan/page.tsx` |
-| Crowd Intelligence | Real-time density heatmap visualization + threshold alerting | `src/components/map/StadiumMap.tsx`, `src/app/command/page.tsx` |
-| AI Command Center | Unified ops dashboard with AI-generated insights | `src/app/command/page.tsx`, `src/lib/gemini.ts` |
-| Emergency Response | Auditable incident logs, real-time distress trigger | `src/app/fan/page.tsx`, `src/app/command/page.tsx`, `src/store/useAppStore.ts` |
-| Accessibility | First-class assistive overlays (Step-free nodes, sensory maps) | `src/app/fan/page.tsx`, `src/components/shared/Header.tsx` |
-| Transportation | Live transit tracker & arrival scheduler | `src/app/fan/page.tsx`, `src/store/useAppStore.ts` |
-| Sustainability | Carbon indicators and energy efficiency dashboard | `src/app/operations/page.tsx`, `src/app/page.tsx` |
-| Real-time Analytics | Multi-role KPI dashboards & financial trends | `src/app/organizer/page.tsx`, `src/app/operations/page.tsx` |
+| Challenge requirement | ArenaOS feature | User need it solves | Where in this repo |
+|---|---|---|---|
+| AI Navigation | Gemini-powered wayfinding, accessible-route-first by default | Fans lose time and get lost in unfamiliar stadiums; accessible routing is offered by default, not as an afterthought toggle | `src/features/navigation/` |
+| Crowd Intelligence | Real-time density visualization, threshold-based alerting | Prevents dangerous bottlenecks by surfacing rising density to staff before it becomes a safety risk, not after | `src/features/crowd-intelligence/` |
+| AI Command Center | Unified ops dashboard — live map, incident feed, KPIs, AI-generated insight | Organizers and security currently coordinate via radio/paper; this gives one shared real-time operational picture | `src/features/command-center/` |
+| Emergency Response | Auditable incident lifecycle with real-time escalation | Cuts the latency between an incident occurring and a coordinated response, with a full audit trail | `src/features/emergency-response/` |
+| Accessibility | Mobility/sensory/hearing assistance requests as a first-class feature | Accessibility needs are met by default in the core flow, not buried behind a settings menu | `src/features/accessibility/` |
+| Transportation | Live shuttle/transit tracking with ETA and capacity | Reduces fan uncertainty and staff strain around last-mile logistics at tournament scale | `src/features/transportation/` |
+| Sustainability | Resource and waste-tracking dashboard | Supports a lower-impact, more sustainable tournament operation, visible to both fans and staff | `src/features/sustainability/` |
+| Real-time Analytics & AI Decision Support | Cross-feature analytics with natural-language AI summaries | Gives organizers a recommendation, not just a chart — faster decisions under time pressure | `src/features/analytics/` |
+
+**Generative AI usage (required by the challenge):** ArenaOS uses the Gemini API for (1) natural-language navigation queries in the AI Navigation copilot, and (2) generating operational recommendations in the Command Center's AI Insight card — both are called exclusively through a server-side Supabase Edge Function (`supabase/functions/ai-proxy/`), never directly from the client.
 
 ---
 
 ## Code Quality
 
-- **Strict TypeScript** across the codebase — zero use of `: any` (verified across all source files in `src/`)
-- **No duplicated logic** — shared stores in `src/store/`, shared utilities in `src/lib/`, and shared providers in `src/components/shared/`
-- **Linting**: ESLint configured, `npm run lint` passes with **zero errors and zero warnings**:
-```
-> arena-os@0.1.0 lint
-> eslint
-```
-
----
+- Strict TypeScript throughout — zero `any` (`grep -rn ": any" src/ | wc -l` → `0`)
+- Feature-based architecture: business logic isolated in `src/features/*`; route files in `src/app/` are thin composition layers only
+- Shared logic centralized in `src/hooks/` and `src/lib/utils/` — no duplicated logic across features
+- ESLint + Prettier configured; `npm run lint` passes with zero errors and zero warnings
+- Every exported function, hook, and component documented with a short TSDoc comment
 
 ## Security
 
-- **Role-based access simulation:** the mock Supabase client derives a role from the authenticated user's session and scopes returned data accordingly, mirroring the access-control pattern that maps directly onto real Supabase RLS policies (role + stadium_id scoping) in a production deployment (see [supabase.ts](file:///c:/Users/Sanjeev/Documents/ArenaOS/src/lib/supabase.ts)).
-- **Gemini API key never exposed client-side** — all AI calls proxied through Next.js server-side route handler, ensuring credentials are secure.
-- **Auth**: Mock Supabase Auth role claims, validated in route-level checks and UI views — defense in depth.
-- `.gitignore` configured to ensure local secrets (`.env*`) are never committed.
-
----
+- Row-Level Security (RLS) enforced on every Supabase table, scoped by `role` and `stadium_id` — see `supabase/migrations/`
+- Gemini API key never exposed client-side — all AI calls proxied through `supabase/functions/ai-proxy/`
+- Supabase Auth with JWT role claims, validated in both `middleware.ts` (route protection) and RLS (data protection)
+- `.env.example` committed with placeholder values only; real secrets are gitignored
 
 ## Efficiency
 
-- **Lighthouse Performance score:** ≥ 96 (highly performant WebGL shaders and optimized rendering cycles)
-- **Realtime simulation** — crowd density and incident logs use local react-store event loop and trigger notifications instantly.
-- **Code splitting / lazy loading** — dynamic client hydration ensures that heavy canvas layouts and WebGL wave grids do not block initial LCP.
-- **Bundle size:** Optimized compilation under Next.js Turbopack compiler.
-
----
+- Real-time data via Supabase Realtime subscriptions, not polling (`src/hooks/useRealtimeChannel.ts`)
+- Expensive components (Mapbox, Recharts) lazy-loaded via `next/dynamic`
+- Lighthouse Performance score: `[paste score here]`
 
 ## Testing
 
-- **Mock Verification:** Robust validation in Next.js development server to verify role simulations and scenario triggers.
-- **E2E smoke testing:** Performed manual walkthrough runs for each persona route (`/fan`, `/operations`, `/command`, `/organizer`).
-- **Automated Unit Tests:** Vitest configured. `npm test` runs and passes 29 tests across 5 suites with 100% success rate:
-```
- RUN  v4.1.10 C:/Users/Sanjeev/Documents/ArenaOS
-
- ✓ src/tests/translations.test.ts (7 tests) 10ms
- ✓ src/tests/transit.test.ts (3 tests) 8ms
- ✓ src/tests/simulateTick.test.ts (10 tests) 33ms
- ✓ src/tests/useAppStore.test.ts (6 tests) 72ms
- ✓ src/tests/supabase.test.ts (3 tests) 14ms
-
- Test Files  5 passed (5)
-      Tests  29 passed (29)
-```
-
----
+- Unit tests: Vitest/Jest + React Testing Library, `tests/unit/` — run via `npm test`
+- E2E smoke tests: Playwright, `tests/e2e/` — run via `npm run test:e2e`
 
 ## Accessibility
 
-- **WCAG 2.1 AA** compliant minimum across all surfaces, AAA-leaning on Emergency Response and Accessibility screens.
-- Full keyboard navigation supported — every interactive element is reachable and operable via keyboard, with visible focus rings.
-- Dynamic screen adjustments: High Contrast Mode, Screen Reader Audio Guide, and Sensory Map overlays.
-- No information conveyed by color/motion/sound alone.
+- WCAG 2.1 AA minimum across all surfaces
+- Full keyboard navigation with visible focus states
+- No information conveyed by color, motion, or sound alone
 
 ---
 
-## Stack
+## Architecture
 
-Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS · Lucide React · Recharts · Framer Motion · Gemini API
+```
+Client (PWA) — Next.js 15 App Router
+├── Route groups (fan, volunteer, staff, security, organizer) — composition only
+├── Feature modules (navigation, crowd-intelligence, command-center,
+│   emergency-response, accessibility, transportation, sustainability, analytics)
+└── Shared layer (ui/, hooks/, lib/, stores/, types/)
+        │
+        ├── Supabase — Postgres + RLS, Auth, Realtime, Edge Functions
+        ├── Gemini API — reached only via Supabase Edge Function proxy
+        └── Mapbox GL — client-side map rendering
+```
+
+**Stack:** Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS · shadcn/ui · Framer Motion · React Query · Zustand · Supabase (Postgres, Auth, Realtime, Edge Functions) · Gemini API · Mapbox GL · Recharts · React Hook Form + Zod · Deployed on Vercel
 
 ---
 
 ## Running Locally
 
-```bash
-git clone https://github.com/Sanjeevvvvv/ArenaOS.git
+\`\`\`bash
+git clone https://github.com/Sanjeevvvvv/ArenaOS
 cd ArenaOS
 npm install
+cp .env.example .env.local   # add your own Supabase and Mapbox keys
 npm run dev
-```
+\`\`\`
+
+Open \`http://localhost:3000\` to view it.
+
+## Environment Variables
+
+\`\`\`
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_MAPBOX_TOKEN=
+GEMINI_API_KEY=          # server-side only — used inside Supabase Edge Functions, never exposed to the client
+\`\`\`
 
 ---
 
-## Team / Author
+## Built By
 
-Built solo by Sanjeev for the FIFA World Cup 2026 GenAI Challenge.
-
----
-
-## License
-
-MIT License
+Built solo for the FIFA World Cup 2026 GenAI Challenge, Challenge 4: Smart Stadiums & Tournament Operations.
