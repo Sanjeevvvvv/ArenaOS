@@ -29,6 +29,7 @@ class MockSupabaseClient {
       };
       if (typeof window !== 'undefined') {
         localStorage.setItem('arena_user', JSON.stringify(user));
+        document.cookie = `arena_user_role=${user.user_metadata.role}; path=/;`;
       }
       return { data: { user }, error: null };
     },
@@ -48,12 +49,14 @@ class MockSupabaseClient {
       };
       if (typeof window !== 'undefined') {
         localStorage.setItem('arena_user', JSON.stringify(user));
+        document.cookie = `arena_user_role=${role}; path=/;`;
       }
       return { data: { user }, error: null };
     },
     signOut: async () => {
       if (typeof window !== 'undefined') {
         localStorage.removeItem('arena_user');
+        document.cookie = 'arena_user_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
       }
       return { error: null };
     },

@@ -83,7 +83,26 @@ export const useAppStore = create<AppState>((set) => ({
   audioGuideActive: false,
   highContrastMode: false,
 
-  setRole: (role) => set({ role }),
+  setRole: (role) => {
+    if (typeof document !== 'undefined') {
+      document.cookie = `arena_user_role=${role}; path=/;`;
+    }
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('arena_user');
+      if (stored) {
+        try {
+          const user = JSON.parse(stored);
+          if (user.user_metadata) {
+            user.user_metadata.role = role;
+            localStorage.setItem('arena_user', JSON.stringify(user));
+          }
+        } catch {
+          // ignore
+        }
+      }
+    }
+    set({ role });
+  },
   setLanguage: (language) => set({ language }),
   setEmergencyActive: (active) => set({ emergencyActive: active }),
   toggleEmergency: () => set((state) => ({ emergencyActive: !state.emergencyActive })),
