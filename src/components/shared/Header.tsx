@@ -33,7 +33,8 @@ export function Header() {
     alerts,
     language,
     setLanguage,
-    updateAlertStatus
+    updateAlertStatus,
+    resolveAlert
   } = useAppStore();
   const router = useRouter();
   
@@ -307,14 +308,25 @@ export function Header() {
                           <p className="text-[10px] text-muted-foreground line-clamp-1">{alt.description}</p>
                           <div className="flex justify-between items-center pt-2 border-t border-border/30 text-[9px] mt-1.5">
                             <span className="text-neutral-400">Loc: {alt.location}</span>
-                            <button
-                              onClick={() => {
-                                updateAlertStatus(alt.id, 'in-progress');
-                              }}
-                              className="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 hover:bg-cyan-500/20 transition"
-                            >
-                              Ack
-                            </button>
+                            {alt.status === 'active' ? (
+                              <button
+                                onClick={() => {
+                                  updateAlertStatus(alt.id, 'in-progress');
+                                }}
+                                className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition cursor-pointer font-semibold"
+                              >
+                                Ack
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => {
+                                  resolveAlert(alt.id);
+                                }}
+                                className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition cursor-pointer font-semibold"
+                              >
+                                Resolve
+                              </button>
+                            )}
                           </div>
                         </div>
                       ))

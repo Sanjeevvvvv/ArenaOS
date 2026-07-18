@@ -425,7 +425,7 @@ Keep your advice highly tactical, structured, and geared toward security staff. 
                             e.stopPropagation();
                             updateAlertStatus(alt.id, 'in-progress');
                           }}
-                          className="text-[8px] px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30 hover:bg-amber-500/20"
+                          className="text-[8px] px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30 hover:bg-amber-500/20 cursor-pointer font-semibold"
                         >
                           Ack
                         </button>
@@ -437,7 +437,7 @@ Keep your advice highly tactical, structured, and geared toward security staff. 
                             resolveAlert(alt.id);
                             if (selectedAlertId === alt.id) setSelectedAlertId(null);
                           }}
-                          className="text-[8px] px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20"
+                          className="text-[8px] px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20 cursor-pointer font-semibold"
                         >
                           Resolve
                         </button>
@@ -459,7 +459,7 @@ Keep your advice highly tactical, structured, and geared toward security staff. 
                 </h4>
                 <button 
                   onClick={() => setSelectedAlertId(null)}
-                  className="text-[10px] text-neutral-400 hover:text-white font-medium"
+                  className="text-[10px] text-neutral-400 hover:text-white font-medium cursor-pointer"
                 >
                   Close
                 </button>
@@ -491,7 +491,7 @@ Keep your advice highly tactical, structured, and geared toward security staff. 
                       soundManager.playClick();
                       updateAlertStatus(selectedAlert.id, 'in-progress');
                     }}
-                    className="px-2.5 py-1 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40 hover:bg-amber-500/30 transition text-[9px] font-bold"
+                    className="px-2.5 py-1 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40 hover:bg-amber-500/30 transition text-[9px] font-bold cursor-pointer"
                   >
                     Acknowledge Incident
                   </button>
@@ -503,7 +503,7 @@ Keep your advice highly tactical, structured, and geared toward security staff. 
                       resolveAlert(selectedAlert.id);
                       setSelectedAlertId(null);
                     }}
-                    className="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/30 transition text-[9px] font-bold"
+                    className="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/30 transition text-[9px] font-bold cursor-pointer"
                   >
                     Mark as Resolved
                   </button>
