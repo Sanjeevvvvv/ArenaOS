@@ -5,6 +5,7 @@ describe('MockSupabaseClient Auth and Data Methods', () => {
   it('should authenticate user and return mock session', async () => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email: 'organizer@arenaos.fifa',
+      password: 'mypassword123'
     });
 
     expect(error).toBeNull();
@@ -16,6 +17,7 @@ describe('MockSupabaseClient Auth and Data Methods', () => {
   it('should sign up user and return data structure', async () => {
     const { data, error } = await supabase.auth.signUp({
       email: 'fan@arenaos.fifa',
+      password: 'fanpassword123',
       options: {
         data: { name: 'FIFA Fan', role: 'fan' }
       }

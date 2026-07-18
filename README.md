@@ -59,17 +59,18 @@ ArenaOS is built specifically to address the core objectives of Challenge Vertic
 
 - **Mock Verification:** Robust validation in Next.js development server to verify role simulations and scenario triggers.
 - **E2E smoke testing:** Performed manual walkthrough runs for each persona route (`/fan`, `/operations`, `/command`, `/organizer`).
-- **Automated Unit Tests:** Vitest configured. `npm test` runs and passes 19 tests across 4 suites with 100% success rate:
+- **Automated Unit Tests:** Vitest configured. `npm test` runs and passes 29 tests across 5 suites with 100% success rate:
 ```
  RUN  v4.1.10 C:/Users/Sanjeev/Documents/ArenaOS
 
- ✓ src/tests/transit.test.ts (3 tests) 6ms
- ✓ src/tests/translations.test.ts (7 tests) 11ms
- ✓ src/tests/useAppStore.test.ts (6 tests) 47ms
- ✓ src/tests/supabase.test.ts (3 tests) 7ms
+ ✓ src/tests/translations.test.ts (7 tests) 10ms
+ ✓ src/tests/transit.test.ts (3 tests) 8ms
+ ✓ src/tests/simulateTick.test.ts (10 tests) 33ms
+ ✓ src/tests/useAppStore.test.ts (6 tests) 72ms
+ ✓ src/tests/supabase.test.ts (3 tests) 14ms
 
- Test Files  4 passed (4)
-      Tests  19 passed (19)
+ Test Files  5 passed (5)
+      Tests  29 passed (29)
 ```
 
 ---
