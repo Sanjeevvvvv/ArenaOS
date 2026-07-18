@@ -105,4 +105,4 @@ GEMINI_API_KEY=          # server-side only — used inside Supabase Edge Functi
 
 ## Built By
 
-Built solo for the FIFA World Cup 2026 GenAI Challenge, Challenge 4: Smart Stadiums & Tournament Operations.
+Built solo by Sanjeevvvvv for the FIFA World Cup 2026 GenAI Challenge, Challenge 4: Smart Stadiums & Tournament Operations.
