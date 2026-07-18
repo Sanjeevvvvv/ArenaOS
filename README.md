@@ -5,82 +5,94 @@
 
 **Live demo:** https://arena-os-ochre.vercel.app/
 **Repository:** https://github.com/Sanjeevvvvv/ArenaOS
+**LinkedIn post:** https://www.linkedin.com/posts/sanjeev-pranay_fifa2026-genaichallenge-nextjs-ugcPost-7482479530...
 
 ---
 
 ## Problem Statement Alignment
 
-**Challenge 4: Smart Stadiums & Tournament Operations** calls for an AI-powered system that unifies fans, volunteers, stadium staff, security teams, and organizers into one intelligent operational ecosystem for the tournament. ArenaOS is built directly against that brief — not as a general sports app, but as a Stadium Operating System purpose-built for tournament-scale operations:
+**Challenge 4: Smart Stadiums & Tournament Operations** calls for an AI-powered system that unifies fans, volunteers, stadium staff, security teams, and organizers into one intelligent operational ecosystem for the tournament. ArenaOS is built directly against that brief — a Stadium Operating System with four distinct, role-gated personas rather than one shared dashboard:
 
-| Challenge requirement | ArenaOS feature | User need it solves | Where in this repo |
+| Persona | Route | Sees | User need it solves |
 |---|---|---|---|
-| AI Navigation | Gemini-powered wayfinding + accessible-route-first routing | Fans lose time and get lost in unfamiliar stadiums; accessible routing is offered by default | `src/components/map/StadiumMap.tsx`, `src/app/fan/page.tsx` |
-| Crowd Intelligence | Real-time density heatmap visualization + threshold alerting | Prevents dangerous bottlenecks by surfacing rising density to staff before it becomes a safety hazard | `src/components/map/StadiumMap.tsx`, `src/app/command/page.tsx` |
-| AI Command Center | Unified ops dashboard with AI-generated insights | Organizers and security currently coordinate via radio/paper; this gives one shared real-time operational picture | `src/app/command/page.tsx`, `src/lib/gemini.ts` |
-| Emergency Response | Auditable incident logs, real-time distress trigger | Cuts the latency between an incident occurring and a coordinated response, with a full audit trail | `src/app/fan/page.tsx`, `src/app/command/page.tsx`, `src/store/useAppStore.ts` |
-| Accessibility | First-class assistive overlays (Step-free nodes, sensory maps) | Accessibility needs are met by default in the core flow, not buried behind a settings menu | `src/app/fan/page.tsx`, `src/components/shared/Header.tsx` |
-| Transportation | Live transit tracker & arrival scheduler | Reduces fan uncertainty and staff strain around last-mile logistics at tournament scale | `src/app/fan/page.tsx`, `src/store/useAppStore.ts` |
-| Sustainability | Carbon indicators and waste tracking | Supports a lower-impact, more sustainable tournament operation, visible to both fans and staff | `src/app/operations/page.tsx`, `src/app/page.tsx` |
-| Real-time Analytics | Multi-role KPI dashboards & financial trends | Gives organizers a recommendation, not just a chart — faster decisions under time pressure | `src/app/organizer/page.tsx`, `src/app/operations/page.tsx` |
+| Fan | `/fan` | Navigation, concessions, transit, accessibility requests | Fans lose time and get lost in unfamiliar stadiums; accessible routing and wait-time visibility are offered by default |
+| Staff | `/operations` | Zone tasks — cleaning, restocking, assistance requests | Gives ground staff a live, assigned task queue instead of relying on radio/paper handoffs |
+| Security | `/command` | Live incident feed, crowd density, escalation controls | Cuts the latency between an incident occurring and a coordinated response |
+| Organizer | `/organizer` | Cross-zone KPIs, environmental/sustainability metrics, full incident and task oversight | Gives tournament organizers one real-time operational picture instead of five disconnected tools |
 
-**Generative AI usage:** ArenaOS uses the Gemini API for (1) natural-language navigation queries in the Fan wayfinder, and (2) generating operational recommendations in the Command Center's AI Insight card — both are called exclusively through a server-side route handler (`src/app/api/gemini/route.ts`), never directly from the client.
+**Generative AI usage (required by the challenge):** ArenaOS uses the Gemini API for natural-language queries in the AI copilot (`src/lib/gemini.ts`), called through a server-side Next.js API route (`/api/gemini`) — the Gemini API key is never present in any client-side bundle.
+
+---
+
+## Try It — Role Access
+
+Each persona route is protected by role, not just hidden by UI. To try each one on the live demo, sign in with an email containing the relevant keyword (any non-empty password works — this is a demo-mode mock auth, see Security section below):
+
+| Email pattern | Role assigned | Can access |
+|---|---|---|
+| `anything@example.com` (no keyword) | `fan` | `/fan` only |
+| `staff@example.com` | `staff` | `/operations` |
+| `security@example.com` | `security` | `/command` |
+| `organizer@example.com` | `organizer` | `/organizer`, `/command`, `/operations` (full access) |
+
+Visiting a protected route without the required role redirects to `/` — this is enforced server-side in `src/proxy.ts`, not just hidden client-side.
 
 ---
 
 ## Code Quality
 
-- **Strict TypeScript** across the codebase — zero use of `: any` (verified across all source files in `src/`)
-- **No duplicated logic** — shared stores in `src/store/` (types.ts, mockData.ts, simulateTick.ts), shared utilities in `src/lib/` (soundGuard.ts, sounds.ts), and shared providers in `src/components/shared/`
-- **Linting**: ESLint configured, `npm run lint` passes with **zero errors and zero warnings**
-
----
+- Strict TypeScript throughout — zero `any` (`grep -rn ": any" src/ | wc -l` → `0`)
+- Feature-based architecture: business logic isolated in `src/features/*` and `src/store/`; route files in `src/app/` are thin composition layers only
+- Shared logic centralized in `src/hooks/` and `src/lib/utils/` — no duplicated logic across features
+- ESLint + Prettier configured; `npm run lint` passes with zero errors and zero warnings
+- Every exported function, hook, and component documented with a short TSDoc comment
 
 ## Security
 
-- **Route-level access control:** `src/proxy.ts` enforces role-based access to `/command`, `/operations`, and `/organizer` via an explicit allow-list per route, redirecting unauthorized roles rather than silently permitting access. The role is synced to a cookie (`arena_user_role`) at sign-in/sign-out in `src/lib/supabase.ts`, since edge middleware cannot read localStorage. Data-layer access is scoped in parallel: the mock Supabase client's `from()` derives the current role and applies table-level authorization checks (e.g. `security_logs` requires `security` or `organizer`; `financial_kpis` requires `organizer`), mirroring the access-control pattern a production deployment would enforce via real Supabase RLS policies.
-- **Security Hardening:** An earlier version of the route guard logged role checks without enforcing them; this was identified and corrected to actually redirect unauthorized access before this submission.
-- **Gemini API key never exposed client-side** — all AI calls proxied through Next.js server-side route handler, ensuring credentials are secure.
-- **Auth**: Mock Supabase Auth role claims, validated in route-level checks and UI views — defense in depth.
-- `.gitignore` configured to ensure local secrets (`.env*`) are never committed.
+- **Route-level access control:** `src/proxy.ts` enforces role-based access to `/command`, `/operations`, and `/organizer` via an explicit allow-list per route, redirecting unauthorized roles rather than silently permitting access
+- The active role is synced to a cookie (`arena_user_role`) at sign-in/sign-out in `src/lib/supabase.ts`, since edge proxy logic cannot read `localStorage`
+- **Data-layer access is scoped in parallel:** the mock Supabase client's `from()` derives the current role from the session and applies table-level authorization checks (e.g. `security_logs` requires `security` or `organizer`; `financial_kpis` requires `organizer`), mirroring the access-control pattern a production deployment would enforce via real Supabase Row-Level Security policies
+- Gemini API key never exposed client-side — all AI calls proxied through the server-side `/api/gemini` route handler
+- `.env.example` committed with placeholder values only; real secrets are gitignored
 
----
+**Security hardening note:** an earlier version of the route guard (then `middleware.ts`) logged the active role on protected routes without actually enforcing it — any role could pass through. This was identified during review and corrected in `src/proxy.ts` to genuinely redirect unauthorized access before this submission, alongside migrating off the deprecated `middleware.ts` convention (Next.js 16 requires `proxy.ts`).
+
+**On the mock backend:** this build uses a high-fidelity in-memory/`localStorage` mock of the Supabase client (`MockSupabaseClient` in `src/lib/supabase.ts`) rather than a live Supabase project, so the app is fully self-contained and demoable with zero external service dependencies. The mock's method signatures, auth flow, and role-scoped query behavior are designed to map directly onto a real Supabase client and real RLS policies with no changes to calling code — swapping in real credentials in `.env.local` is the only change needed for a production backend.
 
 ## Efficiency
 
-- **Lighthouse Performance score:** ≥ 96 (highly performant WebGL shaders and optimized rendering cycles)
-- **Realtime simulation** — crowd density and incident logs use local react-store event loop and trigger notifications instantly.
-- **Code splitting / lazy loading** — dynamic client hydration ensures that heavy canvas layouts and WebGL wave grids do not block initial LCP.
-- **Bundle size:** Optimized compilation under Next.js Turbopack compiler.
-
----
+- Simulated real-time updates via a client-side interval-driven Zustand store (`simulateTick` in `src/store/`), architected to map directly onto Supabase Realtime subscriptions in a production deployment
+- Expensive/visual components lazy-loaded via `next/dynamic` where applicable
+- Lighthouse Performance score: `[paste score here]`
 
 ## Testing
 
-- **Mock Verification:** Robust validation in Next.js development server to verify role simulations and scenario triggers.
-- **E2E smoke testing:** Performed manual walkthrough runs for each persona route (`/fan`, `/operations`, `/command`, `/organizer`).
-- **Automated Unit Tests:** Vitest configured. `npm test` runs and passes 32 tests across 6 suites with 100% success rate:
-```
- RUN  v4.1.10 C:/Users/Sanjeev/Documents/ArenaOS
-
- ✓ src/tests/transit.test.ts (3 tests) 8ms
- ✓ src/tests/simulateTick.test.ts (10 tests) 28ms
- ✓ src/tests/translations.test.ts (7 tests) 9ms
- ✓ src/tests/useAppStore.test.ts (6 tests) 34ms
- ✓ src/tests/supabase.test.ts (3 tests) 9ms
- ✓ src/tests/proxy.test.ts (3 tests) 14ms
-
- Test Files  6 passed (6)
-      Tests  32 passed (32)
-```
-
----
+- Unit tests: Vitest + React Testing Library, `src/tests/` — run via `npm test`
 
 ## Accessibility
 
-- **WCAG 2.1 AA** compliant minimum across all surfaces, AAA-leaning on Emergency Response and Accessibility screens.
-- Full keyboard navigation supported — every interactive element is reachable and operable via keyboard, with visible focus rings.
-- Dynamic screen adjustments: High Contrast Mode, Screen Reader Audio Guide, and Sensory Map overlays.
-- No information conveyed by color/motion/sound alone.
+- WCAG 2.1 AA minimum across all surfaces
+- Full keyboard navigation with visible focus states
+- No information conveyed by color, motion, or sound alone
+
+---
+
+## Architecture
+
+```
+Client (PWA) — Next.js 16 App Router
+├── Persona routes: /fan  /operations  /command  /organizer
+│   └── Guarded server-side by src/proxy.ts (role allow-list per route)
+├── Feature modules (navigation, crowd/alerts, tasks, transit, sustainability)
+└── Shared layer (store/, hooks/, lib/, components/)
+        │
+        ├── Mock Supabase client (src/lib/supabase.ts) — auth + role-scoped mock data,
+        │   designed as a drop-in swap for a real Supabase project
+        ├── Gemini API — reached only via the server-side /api/gemini route handler
+        └── Custom stadium map component (Canvas/SVG-based, no external map SDK)
+```
+
+**Stack:** Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · Tailwind CSS · Framer Motion · React Query · Zustand · React Hook Form + Zod · Recharts · Gemini API · Deployed on Vercel
 
 ---
 
@@ -90,14 +102,22 @@
 git clone https://github.com/Sanjeevvvvv/ArenaOS
 cd ArenaOS
 npm install
-cp .env.example .env.local   # add your own keys
+cp .env.example .env.local   # add your own Gemini API key; Supabase vars are optional (mock client is used if absent)
 npm run dev
 ```
 
-Open `http://localhost:3000` to view the app.
+Open `http://localhost:3000` to view it.
+
+## Environment Variables
+
+```
+GEMINI_API_KEY=                       # server-side only — used inside /api/gemini, never exposed to the client
+NEXT_PUBLIC_SUPABASE_URL=             # optional — falls back to the in-memory mock client if unset
+NEXT_PUBLIC_SUPABASE_ANON_KEY=        # optional — falls back to the in-memory mock client if unset
+```
 
 ---
 
 ## Built By
 
-Built solo by Sanjeevvvvv for the FIFA World Cup 2026 GenAI Challenge, Challenge 4: Smart Stadiums & Tournament Operations.
+Built solo by **[Sanjeevvvvv](https://github.com/Sanjeevvvvv)** for the FIFA World Cup 2026 GenAI Challenge, Challenge 4: Smart Stadiums & Tournament Operations.
