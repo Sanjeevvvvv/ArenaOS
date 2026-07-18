@@ -113,3 +113,34 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(207, 188, 255, 0.5);
 }
+
+/* Global High Contrast Mode Overrides */
+.high-contrast {
+  --color-background: #000000 !important;
+  --color-foreground: #ffff00 !important;
+  --color-card: #000000 !important;
+  --color-card-foreground: #ffff00 !important;
+  --color-popover: #000000 !important;
+  --color-popover-foreground: #ffff00 !important;
+  --color-primary: #ffff00 !important;
+  --color-primary-foreground: #000000 !important;
+  --color-secondary: #ffff00 !important;
+  --color-secondary-foreground: #000000 !important;
+  --color-muted: #000000 !important;
+  --color-muted-foreground: #ffff00 !important;
+  --color-accent: #000000 !important;
+  --color-accent-foreground: #ffff00 !important;
+  --color-border: #ffff00 !important;
+  --color-input: #000000 !important;
+  --color-ring: #ffff00 !important;
+
+  body, html {
+    background-color: #000000 !important;
+    color: #ffff00 !important;
+  }
+}
+
+.high-contrast * {
+  border-color: #ffff00 !important;
+  outline-color: #ffff00 !important;
+}

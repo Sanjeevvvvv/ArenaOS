@@ -4,9 +4,22 @@ import React, { useEffect, useState } from 'react';
 import { usePWA } from '@/hooks/usePWA';
 import { Download, X, WifiOff } from 'lucide-react';
 
+import { useAppStore } from '@/store/useAppStore';
+
 export function PWAProvider({ children }: { children: React.ReactNode }) {
   const { isInstallable, installApp } = usePWA();
   const [showBanner, setShowBanner] = useState(false);
+  const { highContrastMode } = useAppStore();
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      if (highContrastMode) {
+        document.documentElement.classList.add('high-contrast');
+      } else {
+        document.documentElement.classList.remove('high-contrast');
+      }
+    }
+  }, [highContrastMode]);
   const [isOffline, setIsOffline] = useState(() => {
     if (typeof window !== 'undefined') {
       return !navigator.onLine;
