@@ -13,7 +13,10 @@ class MockSupabaseClient {
       }
       return { data: { user: null }, error: null };
     },
-    signUp: async ({ email, _password, options }: { email: string; _password?: string; options?: { data?: Record<string, unknown> } }) => {
+    signUp: async ({ email, password, options }: { email: string; password?: string; options?: { data?: Record<string, unknown> } }) => {
+      if (password && password.length < 1) {
+        return { data: { user: null }, error: { message: 'Password required' } };
+      }
       const user = {
         id: `usr-${Math.random().toString(36).substr(2, 9)}`,
         email,

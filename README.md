@@ -39,7 +39,7 @@ ArenaOS is built specifically to address the core objectives of Challenge Vertic
 
 ## Security
 
-- **Row-Level Security (RLS)** mock wrappers for Supabase client enforce policy scopes by `role` + `stadium_id` — see `src/lib/supabase.ts`
+- **Role-based access simulation:** the mock Supabase client derives a role from the authenticated user's session and scopes returned data accordingly, mirroring the access-control pattern that maps directly onto real Supabase RLS policies (role + stadium_id scoping) in a production deployment (see [supabase.ts](file:///c:/Users/Sanjeev/Documents/ArenaOS/src/lib/supabase.ts)).
 - **Gemini API key never exposed client-side** — all AI calls proxied through Next.js server-side route handler, ensuring credentials are secure.
 - **Auth**: Mock Supabase Auth role claims, validated in route-level checks and UI views — defense in depth.
 - `.gitignore` configured to ensure local secrets (`.env*`) are never committed.
